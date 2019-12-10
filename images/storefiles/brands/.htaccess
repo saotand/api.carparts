@@ -1,0 +1,9 @@
+# Apache needs to let you overrite this (AllowOverride Indexes or AllowOverride All)
+
+<IfModule mod_rewrite.c>
+	#AuthType Basic
+	#AuthName "Access to the staging site"
+	#AuthUserFile /_www/api.carparts/.htpasswd
+	#Require valid-user
+	RewriteEngine off
+</IfModule>
