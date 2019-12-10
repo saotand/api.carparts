@@ -1,0 +1,32 @@
+{
+    "workbench.colorTheme": "Abyss",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontFamily": "fira code",
+    "editor.fontSize": 12,
+    "editor.formatOnSaveTimeout": 750,
+    "terminal.integrated.fontFamily": "",
+    "files.autoSave": "onFocusChange",
+    "editor.tabSize": 2,
+    "editor.renderWhitespace": "boundary",
+    "editor.cursorStyle": "line-thin",
+    "editor.wordWrap": "on",
+    "editor.accessibilitySupport": "auto",
+    "editor.autoClosingBrackets": "beforeWhitespace",
+    "editor.autoClosingQuotes": "beforeWhitespace",
+    "search.useIgnoreFiles": false,
+    "css.lint.duplicateProperties": "error",
+    "css.lint.compatibleVendorPrefixes": "warning",
+    "css.lint.float": "warning",
+    "css.lint.idSelector": "warning",
+    "xmlTools.ignoreDefaultNamespace": false,
+    "path-autocomplete.extensionOnImport": true,
+    "bracketPairColorizer.consecutivePairColors": [
+        ["<", "/>"],
+        ["</", ">"],
+        ["<", ">"],
+        [
+            "darkred",
+        ],
+        "Red"
+    ]
+}

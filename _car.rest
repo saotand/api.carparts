@@ -1,0 +1,148 @@
+@URL = http://api.carparts/
+@TOKEN = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NjU0NTcxNzcsImV4cCI6MTU2NTU0MzU3NywiZGF0YSI6eyJJRCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSIsImVtYWlsIjoiYWRtaW5AdHVyZXB1ZXN0by5jb20iLCJwYXNzIjoiOVlLcjNSS3FPRlRYQXhiTlhEazVQLiIsImRvYyI6IjAwMDAwMDAwIiwiZG9jdHlwZSI6IkMiLCJuYWMiOiJWIiwibmFtZSI6IkFkbWluIiwibGFzdCI6IlN5c3RlbSIsImxldmVsIjoiNSIsInBob25lIjoiMDAwMDAwMDAwMDAiLCJiaXJ0aCI6IjAwMDAtMDAtMDAiLCJjcmVhdGVkIjoiMjAxOS0wNy0xOSAwNDowMzowMyIsImFjdGl2ZSI6IjEiLCJ2ZXJpZmllZCI6IjEiLCJsb2dpbl9jb3VudCI6IjEwMSIsImlwIjoiMTI3MCIsImNvbmZpZyI6bnVsbCwidGhlbWUiOiIxIn19.-pGEOpO7jj_jBwpPehB7IDigy_WAYgvil9YhWuy0S_A
+@FORMAT = ?format=json
+@ID = 616efd4be8dc5f1b53a11dd726cbac
+@BRANDID = c4aeb35d3bd7e199f8a54bc5488a05
+@PARTID = aaadf56aaad391a99c8c3d0cc4b725
+@SPID = b77ece3b9334c5fa4ff3944e60b849
+
+### Car Brands
+GET {{URL}}/car/brands{{FORMAT}}
+
+### Car Brands
+GET {{URL}}/car/brands/all{{FORMAT}}
+
+### Car Brands Add
+POST {{URL}}/car/brands/add{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "name":"Encava9"
+}
+
+### Car Brands Edit
+POST {{URL}}/car/brands/edit/{{ID}}{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "name":"Encava21",
+    "image":"http://google.com/logo.png"
+}
+
+### Car Brands Del
+POST {{URL}}/car/brands/del/{{ID}}{{FORMAT}}
+Authorization: {{TOKEN}}
+
+### Car All Models [UNUSED]
+GET {{URL}}/car/models
+
+### Car All Models
+GET {{URL}}/car/models/all{{FORMAT}}
+
+### Car Models mejorar con codigos de ID
+GET {{URL}}/car/models/brand/{{BRANDID}}{{FORMAT}}
+
+### Car Models mejorar con codigos de ID [UNUSED]
+GET {{URL}}/car/models{{FORMAT}}&name=hyundai
+
+### Car Models Add
+POST {{URL}}/car/models/add{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "name":"Power2",
+    "brandID":"c4aeb35d3bd7e199f8a54bc5488a05"
+}
+
+### Car Models edit
+POST {{URL}}/car/models/edit/3df1833af915357c2e09132fd91fa6{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "ID":"3df1833af915357c2e09132fd91fa6",
+    "name":"Power22",
+    "brandID":"c4aeb35d3bd7e199f8a54bc5488a05"
+}
+
+### Car Models delete
+POST {{URL}}/car/models/del/188a98282febfa891ccff363bf2ce3{{FORMAT}}
+Authorization: {{TOKEN}}
+
+### Car Parts
+GET {{URL}}/car/parts{{FORMAT}}
+
+### Car Parts all
+GET {{URL}}/car/parts/all{{FORMAT}}
+
+### Car Parts only
+GET {{URL}}/car/mparts{{FORMAT}}
+
+
+### Car Parts Add
+POST {{URL}}/car/parts/add{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "name": "_rtee",
+    "image": "",
+    "classID": "17398799e41d0df83826a63201ab36", 
+    "count": "0",
+    "active": "1"
+}
+
+### Car Parts all
+GET {{URL}}/car/subparts/all{{FORMAT}}
+
+
+### Car Parts Edit
+POST {{URL}}/car/parts/edit/{{PARTID}}{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "ID": "{{PARTID}}",
+    "name":"Aceite de Caja",
+    "image":"image",
+    "classID":"cc0d01ef8838ec169b9864999c6158",
+    "count":"0",
+    "active":"1"
+}
+
+### Car Parts Edit
+POST {{URL}}/car/parts/del/a67ccae607f689b77b6bdfb541dc8d
+Authorization: {{TOKEN}}
+
+
+### Car Sub Parts add
+POST {{URL}}/car/subparts/add{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "name":"_demo2",
+    "count":"0",
+    "active":"1"
+}
+
+
+### Car Sub Parts Edit
+POST {{URL}}car/subparts/edit/{{ID}}{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+  "ID": "b93ad4442691fd56ad00a0d18d9765",
+  "name": "123123123",
+  "count": "0",
+  "active": "1"
+}
+
+### Car Sub Parts Del
+POST {{URL}}car/subparts/del/{{SPID}}{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+  "ID": "{{SPID}}"
+}
+
+
+### Car Sub Parts Del
+POST  http://api.carparts/car/subparts/del/b93ad4442691fd56ad00a0d18d9765?format=json
+Authorization: {{TOKEN}}

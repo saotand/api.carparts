@@ -1,0 +1,222 @@
+@URL=http://api.carparts/
+@TOKEN=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzIxMTM5NDksImV4cCI6MTU3MjIwMDM0OSwiZGF0YSI6eyJJRCI6IjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMSIsImVtYWlsIjoiYWRtaW5AdHVyZXB1ZXN0by5jb20iLCJwYXNzIjoiOVlLcjNSS3FPRlRYQXhiTlhEazVQLiIsImRvYyI6IjAwMDAwMDAwIiwiZG9jdHlwZSI6IkMiLCJuYWMiOiJWIiwibmFtZSI6IkFkbWluIiwibGFzdCI6IlN5c3RlbSIsImxldmVsIjoiNSIsInBob25lIjoiMDAwMDAwMDAwMDEiLCJiaXJ0aCI6IjAwMDAtMDAtMDAiLCJjcmVhdGVkIjoiMjAxOS0wNy0xOSAwNDowMzowMyIsImFjdGl2ZSI6IjEiLCJ2ZXJpZmllZCI6IjEiLCJsb2dpbl9jb3VudCI6IjE1IiwiaXAiOiIxOTIxNjgiLCJjb25maWciOm51bGwsInRoZW1lIjoiMSIsInVzZXJzX2Jhbl9zdGFydCI6bnVsbCwidXNlcnNfYmFuX2VuZCI6bnVsbCwidXNlcnNfYmFuX2RldGFpbHMiOm51bGx9fQ.ytpC6fgr0yM0XzyhBg_JYftbxnfuVOxzvvRY6RxhXV8
+@TOKEN2=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzMwMTg4MjgsImV4cCI6MTU3MzEwNTIyOCwiZGF0YSI6eyJJRCI6IjM4ZDdhNjI2ZGM5NzRiOTJkOGU1NTg0NmU0NWIxNyIsImVtYWlsIjoic2FvdGFuZEBnbWFpbC5jb20iLCJwYXNzIjoiSG51dzVZUUFzY2VaNDVNZVdMQVdRXC8iLCJkb2MiOiIxNTg3OTM4MSIsImRvY3R5cGUiOiJDIiwibmFjIjoiViIsIm5hbWUiOiJEYXZpZCIsImxhc3QiOiJTYWxpbmFzIiwibGV2ZWwiOiIxIiwicGhvbmUiOiIwNDE2MzIzMTEyMCIsImJpcnRoIjoiMjAwMS0xMC0yNCIsImNyZWF0ZWQiOiIyMDE5LTEwLTI1IDE2OjMyOjEwIiwiYWN0aXZlIjoiMSIsInZlcmlmaWVkIjoiMCIsImxvZ2luX2NvdW50IjoiOSIsImlwIjoiMTkyMTY4IiwiY29uZmlnIjpudWxsLCJ0aGVtZSI6IjEiLCJ1c2Vyc19iYW5fc3RhcnQiOm51bGwsInVzZXJzX2Jhbl9lbmQiOm51bGwsInVzZXJzX2Jhbl9kZXRhaWxzIjpudWxsLCJwcm9maWxlIjpbIjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsIjM3YjQ5MDNkZjBjZjQzZTQ1NDQ5Yzg2YThlMjVhMyIsIjA1NTAwYjdjMmI2MjJlM2Y1NTNlMmExNjc3YjczYiIsImUwNDhhNzM1NjIzN2FhYTBkYTlkYWI2MDNlMWZmOCIsImUyMTY3YjIxNjk2MTdkNGE5MWUwYWI3YjEzOTU0NiIsImIzZjQzM2VmZDRmM2U2MTNiNGViODE2ODM0MTU2YyIsIjcwZjRkOGUwYzJlNDEwNmU4ZDNhMDU4ZTE1NmYxOSIsImNjMGQwMWVmODgzOGVjMTY5Yjk4NjQ5OTljNjE1OCIsIjVlMzM1ZjQwNTc1NTY4YWFmMmZhZWUxMmZiYWMyZSIsIjYxODI3YjQxZGNmNWU4OTI0YzM1Mzg5OWVkNGQ2NCJdLCJzZWxsZXIiOnsiSUQiOiIxNSIsInVzZXJJRCI6IjM4ZDdhNjI2ZGM5NzRiOTJkOGU1NTg0NmU0NWIxNyIsIm5hbWUiOiJFbXByZXNhIFhYWCIsImltYWdlIjoiIiwicmlmIjoiMTIzMTIzMTIzIiwibmFjIjoiSiIsInBob25lIjoiMTIzMTEyMzEyMTIiLCJjaXR5IjoiU29tZXdoZXJlIFNvbWVob3ciLCJhZGRyZXNzIjoiMTIzIn19fQ.ustkz1SCwf3cdtH5KW7jHgpsLmj7yOeHjj5eygQGvvE
+@FORMAT=?format=json
+
+### Main
+GET {{URL}}/{{FORMAT}}
+
+### About Page
+GET {{URL}}about
+
+### Users data
+GET {{URL}}users{{FORMAT}}
+Authorization: {{TOKEN}}
+
+### User data ID
+GET {{URL}}users/5{{FORMAT}}
+Authorization: {{TOKEN}}
+
+### Login user
+POST {{URL}}login{{FORMAT}}
+
+{
+    "email": "admin@turepuesto.com",
+    "pass": "d0708aca."
+}
+
+### User data ID
+POST {{URL}}autoload{{FORMAT}}
+Authorization: {{TOKEN}}
+
+### Logout User
+POST {{URL}}logout
+Authorization: {{TOKEN}}
+
+### Login user
+POST {{URL}}login{{FORMAT}}
+
+{
+    "email": "saotand@gmail.com",
+    "pass": "d0708aca."
+}
+
+### Login user
+POST {{URL}}login{{FORMAT}}
+
+{
+    "email": "saotand2@gmail.com",
+    "pass": "d0708aca."
+}
+
+### New User
+POST {{URL}}user/new{{FORMAT}}
+//Authorization: {{TOKEN}}
+
+{
+    "email":"admin@turepuesto.com",
+    "pass":"d0708aca.",
+    "name": "Admin",
+    "last": "System",
+    "doc": "00000001",
+    "doctype":"C",
+    "nac":"V",
+    "phone":"00000000000"
+}
+
+### New User
+POST {{URL}}user/new{{FORMAT}}
+//Authorization: {{TOKEN}}
+
+{
+  "redirect": false,
+  "email": "saotand@gmail.com",
+  "pass": "123123",
+  "confirmpass": "123123",
+  "doc": "15879381",
+  "doctype": "C",
+  "nac": "V",
+  "name": "David",
+  "last": "Salinas",
+  "level": 1,
+  "phone": "04163231120",
+  "birth": "2001-10-22",
+  "created": "",
+  "active": "1",
+  "verified": "0",
+  "image": "archivo.jpg",
+  "seller": {
+    "name": "Empresa XXX",
+    "image": "",
+    "rif": "123123123",
+    "nac": "J",
+    "phone": "12311231212",
+    "city": "Somewhere Somehow",
+    "address": "123"
+  },
+  "profile": [
+    "000000000000000000000000000000",
+    "37b4903df0cf43e45449c86a8e25a3",
+    "05500b7c2b622e3f553e2a1677b73b",
+    "e048a7356237aaa0da9dab603e1ff8",
+    "e2167b2169617d4a91e0ab7b139546",
+    "b3f433efd4f3e613b4eb816834156c",
+    "70f4d8e0c2e4106e8d3a058e156f19",
+    "cc0d01ef8838ec169b9864999c6158",
+    "5e335f40575568aaf2faee12fbac2e",
+    "61827b41dcf5e8924c353899ed4d64"
+  ]
+}
+
+
+
+### New User
+POST {{URL}}user/check{{FORMAT}}
+
+{
+    "doc":"11111111"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### New User
+POST {{URL}}user/new{{FORMAT}}
+//Authorization: {{TOKEN}}
+
+{
+    "email": "saotand@gmail.com",
+    "pass": "d0708aca.",
+    "doc": "15879381",
+    "doctype": "C",
+    "nac": "V",
+    "name": "David R.",
+    "last": "Salinas M.",
+    "level": "5",
+    "phone": "04163231120",
+    "birth": "2019-07-23",
+    "created": "2019-07-23 12:38:54",
+    "active": "1",
+    "verified": "0"
+}
+
+
+### New User
+POST {{URL}}/user/add{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "email":"adminaa@turepuesto.com",
+    "pass":"d0708aca.",
+    "name": "Admin",
+    "last": "System",
+    "doc": "00000002",
+    "doctype":"C",
+    "nac":"V",
+    "phone":"00000000000"
+}
+
+### Check if user exist
+POST {{URL}}/user/check{{FORMAT}}
+
+{
+    "email":"saotand@gmail.com"
+}
+
+### Editar Usuario
+POST {{URL}}/user/edit/2{{FORMAT}}
+Authorization: {{TOKEN}}
+
+{
+    "birth": "2019-07-23",
+    "doc": "15879381",
+    "doctype": "C",
+    "email": "saotand@gmail.com",
+    "last": "Salinas M.",
+    "level": "5",
+    "nac": "V",
+    "name": "David R.",
+    "pass": "d0708aca.",
+    "phone": "04163231120"
+}
+
+###
+POST {{URL}}user/del/49dcc64962057b8c042b65df63120b{{FORMAT}}
+Authorization: {{TOKEN}}
+
+### Verificar Usuario
+GET {{URL}}user/verify/10
+
+### Imageload
+{{URL}}images/wmapps_logo.png
+
+### Imageload
+http://localhost/img/wowsprites/0.png
+
+
+
+
+
+
+
+
+
+
+### uIDGen
+GET {{URL}}uigen
