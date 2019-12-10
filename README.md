@@ -21,7 +21,7 @@ Pending
 
 ## Authors
 
-- [David Salinas](http://github.com/saotand) - [Facebook](http://facebook.com/saotandhtml)
+- [David Salinas](http://github.com/saotand) - [Facebook](http://facebook.com/saotand) - [Instagram](http://instagram.com/saotand)
 
 ## Credits
 
