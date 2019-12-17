@@ -13,7 +13,7 @@ use
 \ApiCore\modules\car,
 \ApiCore\modules\ask,
 \Apicore\modules\response,
-//\Apicore\modules\upload,
+\Apicore\modules\notification,
 \Apicore\modules\location;
 
 
@@ -27,6 +27,7 @@ class ApiCore extends bin\Core {
             $this->ask = new ask;
             $this->response = new response;
             $this->location = new location;
+            $this->notification = new notification;
             //$this->upd = new upload;
         }catch(PDOException $e){
             die('no se pudo conectar');
@@ -42,9 +43,6 @@ class ApiCore extends bin\Core {
         return ['data'=>null,'message'=> 'ready on GET Request'];
     }
 
-
-
-
     /**
      * Main with no attributes load on server
      * @noAuth
@@ -53,9 +51,6 @@ class ApiCore extends bin\Core {
     public function uIDgen(){
         return $this->user->uID();
     }
-
-
-
 
     /**
      * Main with no attributes load on server
@@ -159,6 +154,62 @@ class ApiCore extends bin\Core {
     public function verify_user($ID){
         return $this->user->verify($ID);
     }
+
+
+
+
+
+    /**
+     * Notificationes
+     * @url POST /notifications
+     * 
+     */
+    public function noti(){
+        return $this->notification->show_notifications();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
