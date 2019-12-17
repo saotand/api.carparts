@@ -129,10 +129,10 @@ class user extends Core{
                     }
                 }
             }else if($k == 'image'){
-
                 $image_dir = "images/storefiles/users/";
-                //echo "image";
+                
                 $b64img = $this->txt2img($data[$k],$data['ID'],$image_dir);
+
                 $data_formatted['image'] = $b64img;
             }elseif($k == 'pass'){
                 // Longitud de la contraseña
@@ -488,7 +488,8 @@ class user extends Core{
             'created'   => false,
             'phone'     => false,
             'birth'     => false,
-            'level'     => false
+            'level'     => false,
+            'image'     => false
         ];
         // Datos de usuario quien hace la edicion
         $userauth = $this->getauth();
