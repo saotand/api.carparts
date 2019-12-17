@@ -130,10 +130,18 @@ class user extends Core{
                 }
             }else if($k == 'image'){
                 $image_dir = "images/storefiles/users/";
-                
-                $b64img = $this->txt2img($data[$k],$data['ID'],$image_dir);
+                $oldIMG = $this->db->get('users','image',['ID'=>$data['ID']]);
+                if($oldIMG){
+                    if($data[$k] != $oldIMG){
+                        unlink($oldIMG);
+                        $b64img = $this->txt2img($data[$k],$data['ID'],$image_dir);
+                        $data_formatted['image'] = $b64img;
+                    }
+                }else{
+                    $b64img = $this->txt2img($data[$k],$data['ID'],$image_dir);
+                    $data_formatted['image'] = $b64img;
+                }
 
-                $data_formatted['image'] = $b64img;
             }elseif($k == 'pass'){
                 // Longitud de la contraseña
                 $passlength = @(int) strlen($data[$k]);
