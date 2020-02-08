@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-12-2019 a las 16:26:34
+-- Tiempo de generación: 04-02-2020 a las 19:05:13
 -- Versión del servidor: 5.6.20
 -- Versión de PHP: 5.5.15
 
@@ -55,6 +55,14 @@ CREATE TABLE IF NOT EXISTS `ask_data` (
 ,`part` varchar(100)
 ,`brand` varchar(100)
 ,`model` varchar(100)
+,`selectedID` varchar(30)
+,`selected` varchar(30)
+,`sellerID` varchar(30)
+,`sellername` varchar(100)
+,`sellerlast` varchar(100)
+,`selleremail` varchar(100)
+,`sellerphone` varchar(50)
+,`sellerimage` varchar(255)
 );
 -- --------------------------------------------------------
 
@@ -88,7 +96,7 @@ INSERT INTO `car_brands` (`ID`, `name`, `image`, `count`, `active`) VALUES
 ('2c4bd929a85da5d903b8583e50b887', 'Land Rover', NULL, 0, 1),
 ('2d0c3287873fd9a2cabe279c6130d7', 'Lada', NULL, 0, 1),
 ('2f716b47b527679f39b287a697bf37', 'Rover', NULL, 0, 1),
-('312c379dde93a2140d4ca950a676a6', 'Zotye', NULL, 75, 1),
+('312c379dde93a2140d4ca950a676a6', 'Zotye', NULL, 77, 1),
 ('34ce2f5b46848027926967af75949b', 'Nissan', NULL, 0, 1),
 ('385a8e09699e0d14234e4cb9812537', 'Autogago', NULL, 0, 1),
 ('3cd01a0a63ed3b8a9329caf036ee8a', 'Alfa Romeo ', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAAAAADRE4smAAAtXUlEQVR42u2d918UxxvHv3/OHEc5RCyggg0LKsQoarBgIxpjDBZMYopYo9iwYC/EiERRgwUbGjtqbNhQQSM2LGdD5BQO5vu6vn1n93bvFub5/AR7uzN787xvd+aZZ575HwJRrf9BEwAAIAAABACAAAAQAAACAEAAAAgAAAEAIAAABACAAAAQAAACA', 0, 1),
@@ -112,7 +120,7 @@ INSERT INTO `car_brands` (`ID`, `name`, `image`, `count`, `active`) VALUES
 ('6b6594040680265fc9c662db70f19c', 'Encava', NULL, 0, 1),
 ('6ce6116e73509db161e9a9392dd030', 'Tata Motors', NULL, 0, 1),
 ('7202d4d744acfaf297c0fe72ebf4d9', 'BMW', NULL, 0, 1),
-('72dea830f65f86f49bb416f76c04b7', 'Zhongxing', NULL, 20, 1),
+('72dea830f65f86f49bb416f76c04b7', 'Zhongxing', NULL, 22, 1),
 ('76f99348508d2915c143e5f01303e2', 'Chana', NULL, 0, 1),
 ('78ae5309fcf6e2e905c1c1c5251dcd', 'Citroen', NULL, 0, 1),
 ('7aa950a0f73724a7cb3d525e59dd50', 'Foton', NULL, 0, 1),
@@ -252,22 +260,22 @@ INSERT INTO `car_models` (`ID`, `brandID`, `name`, `image`, `created`, `count`, 
 ('c911bf674df34600ab0694a7b08ea8', 'a1d5e9ce2135baf03244320496c5fc', '24-250E [5.9L]', '', '2019-08-18 11:14:37', 0, 1),
 ('ca1891930e199a1ddb1ba40fc76fbe', 'a1d5e9ce2135baf03244320496c5fc', 'CORRADO [2.8L]', '', '2019-08-18 11:27:23', 0, 1),
 ('cad7da3e96721df67bfa1f1adf6c0e', 'a1d5e9ce2135baf03244320496c5fc', 'BRASILIA [1.6L]', '', '2019-08-18 11:23:48', 0, 1),
-('cca4bcf2a9e3dbcfc9a025710ae324', '312c379dde93a2140d4ca950a676a6', 'Nomad [1.3L]', '', '2019-08-17 23:09:59', 66, 1),
+('cca4bcf2a9e3dbcfc9a025710ae324', '312c379dde93a2140d4ca950a676a6', 'Nomad [1.3L]', '', '2019-08-17 23:09:59', 67, 1),
 ('ccaf6d5169594cb8037b5ea4de7ddf', 'a1d5e9ce2135baf03244320496c5fc', '31-310 [9.0L]', '', '2019-08-18 11:16:00', 0, 1),
 ('cd9a7dbab4897a1f7d16d59ef67f9d', 'a1d5e9ce2135baf03244320496c5fc', 'KOMBI [1.6L]', '', '2019-08-18 11:42:57', 0, 1),
 ('cf541d8525bf0d5d8fae63dcd2546d', 'a1d5e9ce2135baf03244320496c5fc', 'TOURAN [2.0L]', '', '2019-08-18 11:52:12', 0, 1),
 ('cfe1bc05725b4432fbf8b6cb4395b7', 'a1d5e9ce2135baf03244320496c5fc', 'CADDY [2.0L]', '', '2019-08-18 11:24:18', 0, 1),
 ('d2767b0574d542d6c19bf7a3829125', '312c379dde93a2140d4ca950a676a6', 'Nomad [1.6L]', '', '2019-08-17 23:09:12', 2, 1),
 ('d3c962b7aafaae4150aa9642e22f14', '1034f831d1c632492a9ea06de4bf5e', '6118 [8.9L]', '', '2019-08-17 23:26:14', 0, 1),
-('d8c56c23afa0096b761007e81c063f', '72dea830f65f86f49bb416f76c04b7', 'GrandTiger [2.7L]', '', '2019-08-17 23:16:50', 7, 1),
+('d8c56c23afa0096b761007e81c063f', '72dea830f65f86f49bb416f76c04b7', 'GrandTiger [2.7L]', '', '2019-08-17 23:16:50', 8, 1),
 ('dc9b7f87f21180197f51af152ffb33', 'a1d5e9ce2135baf03244320496c5fc', 'TOUAREG [4.2L]', '', '2019-08-18 11:51:23', 0, 1),
 ('e0bdadb98efe537080a208eef3253c', 'a1d5e9ce2135baf03244320496c5fc', 'VENTO [1.8L]', '', '2019-08-18 11:52:32', 0, 1),
 ('e20383828873ce2216824a42077463', 'a1d5e9ce2135baf03244320496c5fc', 'Beetle [1.5L]', '', '2019-08-18 11:35:10', 0, 1),
 ('e3997bc203153db7ea499491d73c60', 'a1d5e9ce2135baf03244320496c5fc', '24-220 [8.3L]', '', '2019-08-18 11:14:15', 0, 1),
-('e5b59dfd22d9f19f1c38a725c7f55a', '72dea830f65f86f49bb416f76c04b7', 'Admiral [2.2L]', '', '2019-08-17 23:14:55', 12, 1),
+('e5b59dfd22d9f19f1c38a725c7f55a', '72dea830f65f86f49bb416f76c04b7', 'Admiral [2.2L]', '', '2019-08-17 23:14:55', 13, 1),
 ('e7795ae0ce5c568bf0fe66cfdc94d9', 'a1d5e9ce2135baf03244320496c5fc', 'BEETLE [2.5L ]', '', '2019-08-18 11:19:59', 0, 1),
 ('ec2e2679b36c1db054848e02896f81', '1034f831d1c632492a9ea06de4bf5e', 'YTZ5507TQZ40 [9.0L]', '', '2019-08-18 10:48:45', 0, 1),
-('f122b3e1d91b839cb0e59d7829f6b9', '312c379dde93a2140d4ca950a676a6', 'Z300 [1.5L]', '', '2019-08-17 23:11:16', 1, 1),
+('f122b3e1d91b839cb0e59d7829f6b9', '312c379dde93a2140d4ca950a676a6', 'Z300 [1.5L]', '', '2019-08-17 23:11:16', 2, 1),
 ('f1240cbaefaac26a9cfd0479a8eddb', 'a1d5e9ce2135baf03244320496c5fc', 'TIGUAN [2.0L]', '', '2019-08-18 11:50:48', 0, 1),
 ('f2d3776d35450e3a6ebc48d931249b', '1034f831d1c632492a9ea06de4bf5e', '6121 [9.0L]', '', '2019-08-18 10:47:41', 0, 1),
 ('f644ebd81c3d8622853520482ac7c2', 'a1d5e9ce2135baf03244320496c5fc', 'GOLF [1.6L]', '', '2019-08-18 11:40:17', 0, 1),
@@ -375,7 +383,7 @@ INSERT INTO `car_parts` (`ID`, `name`, `image`, `classID`, `count`, `updated`, `
 ('6466f71ea54b31c8e4ad7cf1d225d7', 'Faro', NULL, 'e048a7356237aaa0da9dab603e1ff8', 0, '2019-08-13 09:52:48', 1),
 ('64a60bcca04e9fbae1a8bbb4123034', 'Piston de Servo', NULL, 'e2167b2169617d4a91e0ab7b139546', 0, '2019-08-13 09:47:48', 1),
 ('654baf57836c03799f56249a2ee214', 'Empacadura', NULL, 'b3f433efd4f3e613b4eb816834156c', 0, '2019-08-13 09:54:12', 1),
-('6a30dd687ef6785964a8a9b404be2a', 'Emblema', NULL, 'e048a7356237aaa0da9dab603e1ff8', 0, '2019-08-13 09:54:16', 1),
+('6a30dd687ef6785964a8a9b404be2a', 'Emblema', NULL, 'e048a7356237aaa0da9dab603e1ff8', 1, '2020-02-03 07:00:06', 1),
 ('6c110ac807d0ededc307674fe449ef', 'Copa Caja', NULL, '61827b41dcf5e8924c353899ed4d64', 0, '2019-08-13 09:55:19', 1),
 ('6e231e7ba41ed6ebaa47c66c8ea850', 'Estopera', NULL, '05500b7c2b622e3f553e2a1677b73b', 0, '2019-08-13 09:52:36', 1),
 ('6ff54de929a5b6fb4e01c2c916f8fd', 'Bocina', NULL, '05500b7c2b622e3f553e2a1677b73b', 0, '2019-08-13 09:57:50', 1),
@@ -397,7 +405,7 @@ INSERT INTO `car_parts` (`ID`, `name`, `image`, `classID`, `count`, `updated`, `
 ('7ef2f5ee721f85c4075c1b6a69ab45', 'Mesetas', NULL, '61827b41dcf5e8924c353899ed4d64', 0, '2019-08-13 09:51:21', 1),
 ('82212f53cec61b9d2612246483b3e8', 'Arbol de Leva', NULL, 'b3f433efd4f3e613b4eb816834156c', 0, '2019-08-04 22:03:01', 1),
 ('879bcd18a0ed056b1dde4952061945', 'Piston', NULL, 'b3f433efd4f3e613b4eb816834156c', 0, '2019-08-13 09:47:40', 1),
-('884ea9c9f9343af5b16f5fbda02c74', 'Barra Central', NULL, '61827b41dcf5e8924c353899ed4d64', 0, '2019-08-04 22:04:01', 1),
+('884ea9c9f9343af5b16f5fbda02c74', 'Barra Central', NULL, '61827b41dcf5e8924c353899ed4d64', 1, '2019-12-18 15:40:53', 1),
 ('8a83b82658bb30243d750140f5c03f', 'Rele', NULL, '70f4d8e0c2e4106e8d3a058e156f19', 0, '2019-08-13 09:46:16', 1),
 ('8b153fd178db14efd5dba98a9d029d', 'Rodamientos', NULL, '61827b41dcf5e8924c353899ed4d64', 0, '2019-08-13 09:46:44', 1),
 ('9020282e4bcdd0210c42b7838b6e5a', 'Disco de Hierro', NULL, '05500b7c2b622e3f553e2a1677b73b', 0, '2019-08-13 09:54:51', 1),
@@ -408,7 +416,7 @@ INSERT INTO `car_parts` (`ID`, `name`, `image`, `classID`, `count`, `updated`, `
 ('9e2c5802832e678093b92d43e20bd8', 'Carter', NULL, 'b3f433efd4f3e613b4eb816834156c', 0, '2019-08-13 09:56:17', 1),
 ('a03957a473ba06f85f280701c47888', 'Cadena', NULL, 'b3f433efd4f3e613b4eb816834156c', 0, '2019-08-13 09:56:39', 1),
 ('a7a4a9e7b214641f64200bef25aecb', 'Tapa de Aceite', NULL, 'b3f433efd4f3e613b4eb816834156c', 0, '2019-08-13 09:44:44', 1),
-('a8f0202c26a8dc50c606621e4f1d53', 'Aceite de Refrigeracion', NULL, '37b4903df0cf43e45449c86a8e25a3', 8, '2019-10-21 00:06:20', 1),
+('a8f0202c26a8dc50c606621e4f1d53', 'Aceite de Refrigeracion', NULL, '37b4903df0cf43e45449c86a8e25a3', 9, '2019-12-17 20:16:18', 1),
 ('aaadf56aaad391a99c8c3d0cc4b725', 'Aceite de Caja', NULL, 'cc0d01ef8838ec169b9864999c6158', 0, '2019-11-03 17:31:55', 1),
 ('ae75d8d4c7bf2e393b02c85c27b38a', 'Manguera', NULL, '5e335f40575568aaf2faee12fbac2e', 0, '2019-08-13 09:51:59', 1),
 ('b2c5af39c4b557aadcff4df445fc39', 'Bobina', NULL, '70f4d8e0c2e4106e8d3a058e156f19', 0, '2019-08-13 09:57:54', 1),
@@ -442,7 +450,7 @@ INSERT INTO `car_parts` (`ID`, `name`, `image`, `classID`, `count`, `updated`, `
 ('d825b3a5a7fdad9331ffaaf8622bba', 'Pernos', NULL, 'b3f433efd4f3e613b4eb816834156c', 0, '2019-08-13 09:49:49', 1),
 ('d9d0f87b6cd740bfd6c5ab61f028bf', 'Stop', NULL, 'e048a7356237aaa0da9dab603e1ff8', 0, '2019-08-13 09:47:29', 1),
 ('dd189f62ae68c14d113723909fe6ad', 'Sensores', NULL, '70f4d8e0c2e4106e8d3a058e156f19', 0, '2019-08-13 09:47:23', 1),
-('deb77d6ef880fc2607e11df043f042', 'Evaporador', NULL, '37b4903df0cf43e45449c86a8e25a3', 2, '2019-10-30 04:44:20', 1),
+('deb77d6ef880fc2607e11df043f042', 'Evaporador', NULL, '37b4903df0cf43e45449c86a8e25a3', 3, '2019-12-17 20:19:23', 1),
 ('dfab36ffc0f019660d9b888d438037', 'Cilindro', NULL, 'e2167b2169617d4a91e0ab7b139546', 0, '2019-08-13 09:55:56', 1),
 ('e19652167f7d8ce28c403bfab348d1', 'Alternador', NULL, '70f4d8e0c2e4106e8d3a058e156f19', 0, '2019-08-04 22:02:26', 1),
 ('e2546a1f58b135d38001f104a4228e', 'Empacadura', NULL, '05500b7c2b622e3f553e2a1677b73b', 0, '2019-08-13 09:54:09', 1),
@@ -477,13 +485,13 @@ CREATE TABLE IF NOT EXISTS `car_parts_class` (
 
 INSERT INTO `car_parts_class` (`ID`, `name`, `count`, `updated`, `active`) VALUES
 ('05500b7c2b622e3f553e2a1677b73b', 'Caja', 4, '2019-11-23 18:08:24', 1),
-('37b4903df0cf43e45449c86a8e25a3', 'Aire Acondicionado', 113, '2019-12-08 04:23:19', 1),
+('37b4903df0cf43e45449c86a8e25a3', 'Aire Acondicionado', 115, '2019-12-17 20:19:23', 1),
 ('5e335f40575568aaf2faee12fbac2e', 'Sistema de Refrigeracion', 0, '2019-08-10 17:48:42', 1),
-('61827b41dcf5e8924c353899ed4d64', 'Suspension', 4, '2019-09-02 06:06:20', 1),
+('61827b41dcf5e8924c353899ed4d64', 'Suspension', 5, '2019-12-18 15:40:53', 1),
 ('70f4d8e0c2e4106e8d3a058e156f19', 'Partes Electricas', 1, '2019-08-23 20:10:18', 1),
 ('b3f433efd4f3e613b4eb816834156c', 'Motor', 4, '2019-10-09 18:20:02', 1),
 ('cc0d01ef8838ec169b9864999c6158', 'Servicio General', 1, '2019-10-06 16:10:47', 1),
-('e048a7356237aaa0da9dab603e1ff8', 'Carroceria', 1, '2019-10-21 00:06:56', 1),
+('e048a7356237aaa0da9dab603e1ff8', 'Carroceria', 2, '2020-02-03 07:00:06', 1),
 ('e2167b2169617d4a91e0ab7b139546', 'Freno', 0, '2019-08-10 17:47:47', 1);
 
 -- --------------------------------------------------------
@@ -568,7 +576,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
 --
 
 INSERT INTO `requests` (`ID`, `status`, `userID`, `details`, `model`, `year`, `part`, `image`, `startdate`, `enddate`, `active`) VALUES
-('7f197a8d7ebc07b50bd62f046f1f6a', 0, '100000000000000000000000000001', '-----', 'd8c56c23afa0096b761007e81c063f', 2017, '080a156f2ea586513b82f0b9b441e8', NULL, '2019-12-08 04:23:19', '0000-00-00 00:00:00', 1);
+('3b8a627f30fbbb237c27d987d657b5', 0, '100000000000000000000000000001', 'nuevo', 'd8c56c23afa0096b761007e81c063f', 2019, '6a30dd687ef6785964a8a9b404be2a', 'images/storefiles/request/3b8a627f30fbbb237c27d987d657b5.jpeg', '2020-02-04 15:39:15', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -588,6 +596,34 @@ CREATE TABLE IF NOT EXISTS `responses` (
   `recreated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reedited` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `responses`
+--
+
+INSERT INTO `responses` (`ID`, `requestID`, `reuserID`, `status`, `details`, `price`, `currency`, `image`, `recreated`, `reedited`) VALUES
+('b0c3313a104891ef0c2b1b637f6f27', '3b8a627f30fbbb237c27d987d657b5', 'a7d40c509368e3a972163be72ef03e', 0, 'Prueba 2', 450000, 0, 'images/storefiles/responses/b0c3313a104891ef0c2b1b637f6f27.jpeg', '2020-02-04 04:00:00', '2020-02-04 16:48:24'),
+('ee1a0320d7faccf78836a2377c6ec5', '3b8a627f30fbbb237c27d987d657b5', 'a81d82bd3aa5137eb3ff1f044c7713', 0, 'Como nuevo', 670000, 1, 'images/storefiles/responses/ee1a0320d7faccf78836a2377c6ec5.jpeg', '2020-02-03 04:00:00', '2020-02-03 16:25:16');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `response_complete`
+--
+
+CREATE TABLE IF NOT EXISTS `response_complete` (
+  `ID` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `requestID` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `responseID` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `response_complete`
+--
+
+INSERT INTO `response_complete` (`ID`, `requestID`, `responseID`, `created`) VALUES
+('877cf51cc55dc171e9a5a831498ff7', '3b8a627f30fbbb237c27d987d657b5', 'ee1a0320d7faccf78836a2377c6ec5', '2020-02-04 17:59:28');
 
 -- --------------------------------------------------------
 
@@ -619,10 +655,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`ID`, `email`, `pass`, `image`, `doc`, `doctype`, `nac`, `name`, `last`, `level`, `phone`, `birth`, `location`, `created`, `active`, `verified`) VALUES
-('100000000000000000000000000001', 'admin@turepuesto.com', '9YKr3RKqOFTXAxbNXDk5P.', NULL, '00000000', 'C', 'V', 'Admin', 'System', 5, '00000000001', '0000-00-00', NULL, '2019-07-19 08:03:03', 1, 1),
-('267bbfffa03c7bc6f45ea4e946b05c', 'andres@gmail.com', 'JmTvthzXfObkbo4Q5sV6T/', 'images/storefiles/users/267bbfffa03c7bc6f45ea4e946b05c.jpeg', '11111111', 'C', 'V', 'Andres', 'Salinas', 1, '04163231121', '1969-09-10', NULL, '2019-11-22 00:46:14', 1, 0),
-('38d7a626dc974b92d8e55846e45b17', 'saotand@gmail.com', 'Hnuw5YQAsceZ45MeWLAWQ/', 'images/storefiles/users/38d7a626dc974b92d8e55846e45b17.jpeg', '15879381', 'C', 'V', 'David', 'Salinas', 1, '04163231120', '2001-10-24', NULL, '2019-10-25 20:32:10', 1, 0),
-('ed8013cbbfadf5a14379405cfe90e3', 'saotand@gmail2.com', 'nsE/OX00wMq0d0gy5uyq4/', NULL, '15879382', 'C', 'V', 'David', 'Salinas', 0, '04163231120', '1985-11-26', NULL, '2019-11-28 21:14:02', 1, 0);
+('100000000000000000000000000001', 'admin@turepuesto.com', '9YKr3RKqOFTXAxbNXDk5P.', 'images/storefiles/users/100000000000000000000000000001.png', '00000000', 'C', 'V', 'Admin', 'System', 5, '00000000001', '0000-00-00', NULL, '2019-07-19 08:03:03', 1, 1),
+('289a2a336cf00d52be8532876095ea', 'andres@turepuesto.com', 'Uv5DY9nqgil/qRzFu83Iz1', 'images/storefiles/users/289a2a336cf00d52be8532876095ea.jpeg', '15879382', 'C', 'V', 'Andres', 'Salinas', 0, '04163231120', '2001-12-16', NULL, '2019-12-17 05:24:19', 1, 0),
+('a7d40c509368e3a972163be72ef03e', 'valeria@gmail.com', 'Z5HCSk4K/1Axvy8po6Zd0', NULL, '15879332', 'C', 'V', 'Valeria', 'Salinas', 1, '04163231121', '2002-02-04', NULL, '2020-02-04 16:46:53', 1, 0),
+('a81d82bd3aa5137eb3ff1f044c7713', 'saotand@gmail.com', 'ZgQAftGDaHCcJNuQFccvP.', 'images/storefiles/users/a81d82bd3aa5137eb3ff1f044c7713.jpeg', '15879381', 'C', 'V', 'David', 'Salinas', 1, '04163231120', '2001-12-16', NULL, '2019-12-17 04:34:11', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -645,8 +681,8 @@ CREATE TABLE IF NOT EXISTS `users_ban` (
 
 CREATE TABLE IF NOT EXISTS `users_config` (
   `ID` varchar(30) CHARACTER SET latin1 NOT NULL,
-  `login_count` int(11) NOT NULL,
-  `ip` int(11) NOT NULL,
+  `login_count` int(11) NOT NULL DEFAULT '0',
+  `ip` int(11) NOT NULL DEFAULT '0',
   `config` text CHARACTER SET latin1,
   `theme` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
@@ -656,9 +692,12 @@ CREATE TABLE IF NOT EXISTS `users_config` (
 --
 
 INSERT INTO `users_config` (`ID`, `login_count`, `ip`, `config`, `theme`) VALUES
-('100000000000000000000000000001', 78, 192168, NULL, 1),
+('100000000000000000000000000001', 170, -1062731420, NULL, 1),
 ('267bbfffa03c7bc6f45ea4e946b05c', 1, 192168, NULL, 1),
-('38d7a626dc974b92d8e55846e45b17', 20, 192168, NULL, 1);
+('289a2a336cf00d52be8532876095ea', 2, -1062731420, NULL, 1),
+('38d7a626dc974b92d8e55846e45b17', 20, 192168, NULL, 1),
+('a7d40c509368e3a972163be72ef03e', 1, -1062731420, NULL, 1),
+('a81d82bd3aa5137eb3ff1f044c7713', 30, -1062731420, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -693,14 +732,16 @@ CREATE TABLE IF NOT EXISTS `users_seller` (
   `phone` varchar(15) CHARACTER SET latin1 NOT NULL,
   `city` varchar(30) CHARACTER SET latin1 NOT NULL,
   `address` text CHARACTER SET latin1 NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=4 ;
 
 --
 -- Volcado de datos para la tabla `users_seller`
 --
 
 INSERT INTO `users_seller` (`ID`, `userID`, `name`, `image`, `rif`, `nac`, `phone`, `city`, `address`) VALUES
-(1, '267bbfffa03c7bc6f45ea4e946b05c', 'Empresa XXX', '', 123123123, 'J', '12311231212', 'Somewhere Somehow', '123');
+(1, '267bbfffa03c7bc6f45ea4e946b05c', 'Empresa XXX', '', 123123123, 'J', '12311231212', 'Somewhere Somehow', '123'),
+(2, 'a81d82bd3aa5137eb3ff1f044c7713', 'Empresa XXX', '', 123123123, 'J', '12311231212', 'Somewhere Somehow', '123'),
+(3, 'a7d40c509368e3a972163be72ef03e', 'Empresay', '', 123123126, 'J', '12311231212', 'Barcelona', 'Fernandez Padilla');
 
 -- --------------------------------------------------------
 
@@ -712,7 +753,7 @@ CREATE TABLE IF NOT EXISTS `users_sell_profile` (
 `ID` int(11) NOT NULL,
   `userID` varchar(30) CHARACTER SET latin1 NOT NULL,
   `sell` varchar(30) CHARACTER SET latin1 NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=149 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci AUTO_INCREMENT=169 ;
 
 --
 -- Volcado de datos para la tabla `users_sell_profile`
@@ -770,7 +811,27 @@ INSERT INTO `users_sell_profile` (`ID`, `userID`, `sell`) VALUES
 (145, '267bbfffa03c7bc6f45ea4e946b05c', '70f4d8e0c2e4106e8d3a058e156f19'),
 (146, '267bbfffa03c7bc6f45ea4e946b05c', 'cc0d01ef8838ec169b9864999c6158'),
 (147, '267bbfffa03c7bc6f45ea4e946b05c', '5e335f40575568aaf2faee12fbac2e'),
-(148, '267bbfffa03c7bc6f45ea4e946b05c', '61827b41dcf5e8924c353899ed4d64');
+(148, '267bbfffa03c7bc6f45ea4e946b05c', '61827b41dcf5e8924c353899ed4d64'),
+(149, 'a81d82bd3aa5137eb3ff1f044c7713', '000000000000000000000000000000'),
+(150, 'a81d82bd3aa5137eb3ff1f044c7713', '37b4903df0cf43e45449c86a8e25a3'),
+(151, 'a81d82bd3aa5137eb3ff1f044c7713', '05500b7c2b622e3f553e2a1677b73b'),
+(152, 'a81d82bd3aa5137eb3ff1f044c7713', 'e048a7356237aaa0da9dab603e1ff8'),
+(153, 'a81d82bd3aa5137eb3ff1f044c7713', 'e2167b2169617d4a91e0ab7b139546'),
+(154, 'a81d82bd3aa5137eb3ff1f044c7713', 'b3f433efd4f3e613b4eb816834156c'),
+(155, 'a81d82bd3aa5137eb3ff1f044c7713', '70f4d8e0c2e4106e8d3a058e156f19'),
+(156, 'a81d82bd3aa5137eb3ff1f044c7713', 'cc0d01ef8838ec169b9864999c6158'),
+(157, 'a81d82bd3aa5137eb3ff1f044c7713', '5e335f40575568aaf2faee12fbac2e'),
+(158, 'a81d82bd3aa5137eb3ff1f044c7713', '61827b41dcf5e8924c353899ed4d64'),
+(159, 'a7d40c509368e3a972163be72ef03e', '000000000000000000000000000000'),
+(160, 'a7d40c509368e3a972163be72ef03e', '37b4903df0cf43e45449c86a8e25a3'),
+(161, 'a7d40c509368e3a972163be72ef03e', '05500b7c2b622e3f553e2a1677b73b'),
+(162, 'a7d40c509368e3a972163be72ef03e', 'e048a7356237aaa0da9dab603e1ff8'),
+(163, 'a7d40c509368e3a972163be72ef03e', 'e2167b2169617d4a91e0ab7b139546'),
+(164, 'a7d40c509368e3a972163be72ef03e', 'b3f433efd4f3e613b4eb816834156c'),
+(165, 'a7d40c509368e3a972163be72ef03e', '70f4d8e0c2e4106e8d3a058e156f19'),
+(166, 'a7d40c509368e3a972163be72ef03e', 'cc0d01ef8838ec169b9864999c6158'),
+(167, 'a7d40c509368e3a972163be72ef03e', '5e335f40575568aaf2faee12fbac2e'),
+(168, 'a7d40c509368e3a972163be72ef03e', '61827b41dcf5e8924c353899ed4d64');
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1080,7 @@ INSERT INTO `_location` (`ID`, `item`, `parentID`, `typez`, `livein`, `search`, 
 --
 DROP TABLE IF EXISTS `ask_data`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ask_data` AS (select `r`.`ID` AS `ID`,`r`.`image` AS `image`,`r`.`userID` AS `userID`,`b`.`ID` AS `brandID`,`r`.`model` AS `modelID`,`s`.`ID` AS `spartID`,`r`.`part` AS `partID`,`r`.`year` AS `year`,`r`.`details` AS `details`,`r`.`startdate` AS `startdate`,`r`.`enddate` AS `enddate`,`r`.`active` AS `active`,`u`.`name` AS `username`,`u`.`last` AS `userlast`,`u`.`email` AS `useremail`,`s`.`name` AS `subpart`,`p`.`name` AS `part`,`b`.`name` AS `brand`,`m`.`name` AS `model` from (((((`requests` `r` join `users` `u` on((`r`.`userID` = `u`.`ID`))) join `car_models` `m` on((`r`.`model` = `m`.`ID`))) join `car_brands` `b` on((`m`.`brandID` = `b`.`ID`))) join `car_parts` `p` on((`r`.`part` = `p`.`ID`))) join `car_parts_class` `s` on((`p`.`classID` = `s`.`ID`))));
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ask_data` AS (select `r`.`ID` AS `ID`,`r`.`image` AS `image`,`r`.`userID` AS `userID`,`b`.`ID` AS `brandID`,`r`.`model` AS `modelID`,`s`.`ID` AS `spartID`,`r`.`part` AS `partID`,`r`.`year` AS `year`,`r`.`details` AS `details`,`r`.`startdate` AS `startdate`,`r`.`enddate` AS `enddate`,`r`.`active` AS `active`,`u`.`name` AS `username`,`u`.`last` AS `userlast`,`u`.`email` AS `useremail`,`s`.`name` AS `subpart`,`p`.`name` AS `part`,`b`.`name` AS `brand`,`m`.`name` AS `model`,`rc`.`ID` AS `selectedID`,`rc`.`responseID` AS `selected`,`ud`.`ID` AS `sellerID`,`ud`.`name` AS `sellername`,`ud`.`last` AS `sellerlast`,`ud`.`email` AS `selleremail`,`ud`.`phone` AS `sellerphone`,`ud`.`image` AS `sellerimage` from ((((((((`requests` `r` join `users` `u` on((`r`.`userID` = `u`.`ID`))) join `car_models` `m` on((`r`.`model` = `m`.`ID`))) join `car_brands` `b` on((`m`.`brandID` = `b`.`ID`))) join `car_parts` `p` on((`r`.`part` = `p`.`ID`))) join `car_parts_class` `s` on((`p`.`classID` = `s`.`ID`))) left join `response_complete` `rc` on((convert(`r`.`ID` using utf8) = `rc`.`requestID`))) left join `responses` `rp` on((`rc`.`responseID` = convert(`rp`.`ID` using utf8)))) left join `users` `ud` on((`rp`.`reuserID` = `ud`.`ID`))));
 
 -- --------------------------------------------------------
 
@@ -1122,6 +1183,12 @@ ALTER TABLE `responses`
  ADD PRIMARY KEY (`ID`);
 
 --
+-- Indices de la tabla `response_complete`
+--
+ALTER TABLE `response_complete`
+ ADD UNIQUE KEY `requestID` (`requestID`), ADD UNIQUE KEY `responseID` (`responseID`);
+
+--
 -- Indices de la tabla `users`
 --
 ALTER TABLE `users`
@@ -1181,12 +1248,12 @@ MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT de la tabla `users_seller`
 --
 ALTER TABLE `users_seller`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `users_sell_profile`
 --
 ALTER TABLE `users_sell_profile`
-MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=149;
+MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=169;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

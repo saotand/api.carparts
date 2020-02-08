@@ -158,6 +158,28 @@ use
           $w = ['userID'=>$auth['ID']];
           $w['ORDER'] = $order;
           $preguntas = $this->db->select($t,$c,$w);
+          
+          // Listado de respuestas por pregunta
+
+          // Tablas de respuestas
+          $rt = 'responses';
+          // Columnas
+          $rc = ['ID','requestID','status','details','price','currency','image','recreated','reedited'];
+          // Holder de Where de consultas
+          $rw = [];
+          // Holder inicilizado de respuestas
+          $responses = [];
+          // Contador
+          $i = 0;
+          // Bucle de Consultas
+          foreach($preguntas as $p){
+            $rw = ['requestID'=>$p['ID']];
+            $r = $this->db->select($rt,$rc,$rw);
+            $responses = $r;
+            $preguntas[$i]['responses'] = $responses;
+            $i++;
+          }
+          
         }
       }
       $q = $this->db->last();
@@ -198,6 +220,29 @@ use
         }
       }
     }
+
+    function ask_sel($ID){
+      $auth = $this->getauth();
+      $t = 'responses';
+      $c = '*';
+      $w = ['ID'=>$ID];
+      //Obtengo la respuesta
+      $responsedata = $this->db->get($t,$c,$w);
+      $newID = $this->uID();
+      // Modifico la pregunta agregando la respuesta seleccionada
+      $ct = 'response_complete';
+      $cc = '*';
+      $cw = ['requestID'=>$responsedata['requestID']];
+      $cd = ['ID'=>$newID,'requestID'=>$responsedata['requestID'],'responseID'=>$responsedata['ID']];
+      $exist = $this->db->get($ct,$cc,$cw);
+      if($exist){
+        return $this->response(null,null,'Ya has respondido a esta Solicitud',406);
+      }else{
+        $completed = $this->db->insert($ct,$cd);
+        return $this->response('Seleccionado','OK');
+      }
+    }
+
 
     function notilist($filter){
       $auth = $this->getauth();

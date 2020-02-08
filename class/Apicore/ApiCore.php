@@ -421,6 +421,16 @@ class ApiCore extends bin\Core {
         return $this->ask->ask($ID);
     }
 
+    /**
+     * Mostrar Todas las Pregunta (Ask)
+     * @url POST /ask/sel/$ID
+     */
+    public function ask_sel($ID){
+        return $this->ask->ask_sel($ID);
+    }
+
+
+
 
     /**
      * Crear Pregunta (Ask)
