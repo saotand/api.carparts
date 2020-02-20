@@ -409,17 +409,8 @@ use
     function car_parts($data,$all = false, $solo = false){
       $t1 = 'car_parts';
       $t2 = $t1.'_class';
-      $t3 = $t1-'_ref';
+      $t3 = $t1.'_ref';
       $parts = [];
-/*
-      "ID": "0089880f627098cdb66cba6629922b",
-      "name": "Electro Ventilador",
-      "image": null,
-      "classID": "70f4d8e0c2e4106e8d3a058e156f19",
-      "count": "0",
-      "updated": "2019-08-13 05:54:28",
-      "active": "1"
-*/
       $j = [
         '[>]'.$t2 => ['classID'=>'ID']
       ];

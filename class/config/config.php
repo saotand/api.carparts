@@ -48,23 +48,53 @@ $config = [
     //Config POP3
     'BASEPOP3'=>'',
     'POP3PORT'=>'',
-    
+
 ];
 
 // Declaración de contantes array Config
-foreach($config as $key => $val){ 
+foreach($config as $key => $val){
     define($key,$val);
 }
 
 // Configuracion de base de Datos
 // MySQL
-$MySQL = [
+$MySQL0 = [
     // required
     'database_type' => 'mysql',
     'database_name' => 'turepuesto',
     'server'        => 'localhost',
     'username'      => 'root',
     'password'      => 'mysql',
+
+    // [optional]
+    'charset'       => 'utf8',
+    'port'          => 3306,
+
+    // [optional] Table prefix
+    'prefix'        => '',
+
+    // [optional] Enable logging (Logging is disabled by default for better performance)
+    'logging'       => true,
+
+    // [optional] MySQL socket (shouldn't be used with server and port)
+    //'socket' => '/tmp/mysql.sock',
+
+    // [optional] driver_option for connection, read more from http://www.php.net/manual/en/pdo.setattribute.php
+    'option'        => [PDO::ATTR_CASE => PDO::CASE_NATURAL],
+
+    // [optional] Medoo will execute those commands after connected to the database for initialization
+    'command'       => ['SET SQL_MODE=ANSI_QUOTES']
+];
+
+// Configuracion de base de Datos
+// MySQL
+$MySQL1 = [
+    // required
+    'database_type' => 'mysql',
+    'database_name' => 'grupo77_turepuesto',
+    'server'        => 'localhost',
+    'username'      => 'grupo77_repuesto',
+    'password'      => 'd0708aca',
 
     // [optional]
     'charset'       => 'utf8',
@@ -110,7 +140,7 @@ $memory = [
 ];
 
 //$conexion = $SQLite;
-$conexion = $MySQL;
+$conexion = $MySQL1;
 //$conexion = $memory;
 
 $JWT_DATA = [

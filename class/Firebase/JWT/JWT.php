@@ -1,10 +1,6 @@
 <?php
 namespace Firebase\JWT;
 
-include_once(__DIR__.'\BeforeValidException.php');
-include_once(__DIR__.'\ExpiredException.php');
-include_once(__DIR__.'\SignatureInvalidException.php');
-
 
 use \DomainException;
 use \InvalidArgumentException;

@@ -585,5 +585,3 @@ class user extends core{
 		}
 	}
 }
-?>
-
