@@ -1,9 +1,9 @@
 <?php
 
 /**********************************************
- * 
+ *
  * Modulo de Modelos Marcas Partes y Subpartes
- * 
+ *
  **********************************************/
 
 namespace Apicore\modules;
@@ -18,8 +18,8 @@ use
   Exception,
   PDO;
 
-  class car extends Core {
-    
+  class car extends core{
+
     //Columnas Entrada de Datos
     protected $cols = [];
 
@@ -29,7 +29,7 @@ use
     // Inicio de Clase
     function __construct(){
       global $conexion, $lang;
-      
+
         $this->data = json_decode(file_get_contents('php://input'),true,1024);
         $this->head = apache_request_headers();
         $this->auth = (!empty($this->head['Authorization']))?$this->head['Authorization']:null;
@@ -157,7 +157,7 @@ use
       $cn = 'name';
       $r = $this->db->get($t,$column_return,[$column_name=>$value]);
       return $r;
-      
+
     }
 
     // Mostrar marcas
@@ -173,7 +173,7 @@ use
         $w = ['ORDER'=>[$t.'.count'=>'DESC']];
         $j = ['[><]'.$t2=>['ID'=>'brandID']];
         $query = "
-        SELECT DISTINCT 
+        SELECT DISTINCT
         `car_brands`.`ID` AS `ID`,
         `car_brands`.`name` AS `name`,
         `car_brands`.`image` AS `image`,
@@ -321,7 +321,7 @@ use
         }
         // Solo los elementos activos
         $w[$t.'.active'] = "1";
-        
+
         $returned = $this->db->select($t,$j,$c,$w);
         $e = $this->db->error();
         $q = $this->db->last();
@@ -473,7 +473,7 @@ use
               $parts[] = ['text' => $subpart.ucwords($v['name']),"value"=>$v['ID']];
             }
           }else{
-           $parts = ['No se encontraron Elementos']; 
+           $parts = ['No se encontraron Elementos'];
           }
         }
       }
@@ -536,7 +536,7 @@ use
             // enviar objeto editado
             return $this->response($return,'Sin cambios');
           }
-          
+
         }else{
           return $this->response(null,null,"Error en consulta BD: ".$e[2],406);
         }
@@ -658,7 +658,7 @@ use
       }else{
         return $this->response(null,null,"No tienes el nivel de acceso para editar sub partes",406);
       }
-      
+
     }
 
     function car_parts_class_del($data){

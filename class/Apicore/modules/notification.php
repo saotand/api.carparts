@@ -11,7 +11,7 @@ use
   Exception,
   PDO;
 
-class notification extends Core{
+class notification extends core{
 
 
     protected $cols = [
@@ -40,7 +40,7 @@ class notification extends Core{
         $this->o = @$lang['forms'];
         // Json Web Token
         $this->JWT = new JWT;
-        
+
         $this->unique = [
             'email' => @$this->l['emailtaken'],
             'doc'   => @$this->l['docexists']

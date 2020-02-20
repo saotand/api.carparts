@@ -1,9 +1,9 @@
 <?php
 
 /***************************
- * 
+ *
  * Modulo de preguntas ASK
- * 
+ *
  ***************************/
 
 namespace Apicore\modules;
@@ -18,7 +18,7 @@ use
   Exception,
   PDO;
 
-  class response extends Core {
+  class response extends core {
 
     //Columnas Entrada de Datos
     protected $cols = [];
@@ -98,7 +98,7 @@ use
     }
 
 
-    
+
 
     function add($data,$requestID){
       $t = 'responses';
@@ -130,7 +130,7 @@ use
       }else{ // No existe la pregunta y se devuelve error
         return $this->response(null,null,"No se encuentra la respuesta",404);
       }
-      
+
 
     }
 
@@ -139,7 +139,7 @@ use
       $c = ['ID','requestID','reuserID','status','details','price','currency','image','recreated','reedited'];
 
       $response = null;
-      
+
       // Usuario quien ejecuta la funcion
       $auth = $this->getAuth();
       $w = ['ID'=>$ID];
@@ -181,7 +181,7 @@ use
       }else{ // Si no se encuentra la respuesta en la BBDD
         return $this->response(null,null,"No se encuentra la respuesta",404);
       }
-      
+
     }
 
 

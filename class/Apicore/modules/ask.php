@@ -18,7 +18,7 @@ use
 	Exception,
 	PDO;
 
-class ask extends Core {
+class ask extends core {
 
 	//Columnas Entrada de Datos
 	protected $cols = [];

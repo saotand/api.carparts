@@ -12,7 +12,7 @@ use
   Exception,
   PDO;
 
-class upload extends Core {
+class upload extends core {
    protected $image = [];
    public $JWT;
 

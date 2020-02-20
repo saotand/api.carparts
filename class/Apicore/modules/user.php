@@ -11,7 +11,7 @@ use
   Exception,
   PDO;
 
-class user extends Core{
+class user extends core{
 
 	protected $cols = [
 		'email'			=> true,

@@ -8,14 +8,14 @@
 namespace apicore;
 use
 \Jacwright\RestServer\RestException,
-\ApiCore\modules\user,
-\ApiCore\modules\car,
-\ApiCore\modules\ask,
-\Apicore\modules\response,
-\Apicore\modules\notification,
-\Apicore\modules\location;
+\apicore\modules\user,
+\apicore\modules\car,
+\apicore\modules\ask,
+\apicore\modules\response,
+\apicore\modules\notification,
+\apicore\modules\location;
 
-class apicore extends \bin\core {
+class apicore extends bin\core {
 function __construct(){
 bin\Core::__construct();
 try{

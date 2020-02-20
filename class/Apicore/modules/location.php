@@ -1,8 +1,8 @@
 <?php
 /***************************
- * 
+ *
  * Modulo de preguntas ASK
- * 
+ *
  ***************************/
 
 namespace Apicore\modules;
@@ -17,7 +17,7 @@ use
   Exception,
   PDO;
 
-  class location extends Core {
+  class location extends core {
 
     //Columnas Entrada de Datos
     protected $cols = [];
@@ -28,7 +28,7 @@ use
         // Inicio de Clase
     function __construct(){
       global $conexion, $lang;
-      
+
         $this->data = json_decode(file_get_contents('php://input'),true,1024);
         $this->head = apache_request_headers();
         $this->auth = (!empty($this->head['Authorization']))?$this->head['Authorization']:null;
