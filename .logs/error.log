@@ -1,0 +1,1 @@
+[Tue Feb 18 03:02:42.283855 2020] [authz_core:error] [pid 10644:tid 1980] [client 192.168.1.171:52835] AH01630: client denied by server configuration: Z:/xampp/phpMyAdmin/

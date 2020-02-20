@@ -5,7 +5,7 @@
 *
 *****************************************************/
 
-namespace ApiCore;
+namespace apicore;
 use
 \Jacwright\RestServer\RestException,
 \ApiCore\modules\user,
@@ -15,7 +15,7 @@ use
 \Apicore\modules\notification,
 \Apicore\modules\location;
 
-class ApiCore extends bin\Core {
+class apicore extends \bin\core {
 function __construct(){
 bin\Core::__construct();
 try{

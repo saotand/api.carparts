@@ -6,7 +6,7 @@
  *
  * /*********************************************************/
 
-namespace Apicore\bin;
+namespace apicore\bin;
 
 define('DS', DIRECTORY_SEPARATOR);
 define('IPATH', DS.'..'.DS.'..'.DS );
@@ -24,7 +24,7 @@ use
 	\Firebase\JWT\SignatureInvalidException,
 	\upload\uploadclass;
 
-abstract class Core{
+abstract class core{
 	// Reservado Sistema
 	protected $data, $head;
 

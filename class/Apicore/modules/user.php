@@ -336,7 +336,7 @@ class user extends Core{
 				// Creacion del token para el frontend
 				$this->token = $this->encript($user);
 				// Molde para enviar datos de respuesta [frontend]
-				$datareturn = ['token' => $this->token /*, user' => $user */];
+				$datareturn = ['token' => $this->token /*, 'user' => $user */ ];
 				return $this->response($datareturn,$this->l['login']);
 			}else{
 				$ban_descrip = isset($ban['ban_details'])?': '.$ban['ban_details'] : NULL;
