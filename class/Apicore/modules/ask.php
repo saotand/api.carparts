@@ -153,7 +153,7 @@ class ask extends core {
 				// Tablas de respuestas
 				$rt = 'responses';
 				// Columnas
-				$rc = ['ID','requestID','status','details','price','currency','image','recreated','reedited'];
+				$rc = ['ID','requestID','status','details','price','currency','image','recreated','reedited','selected'];
 				// Holder de Where de consultas
 				$rw = [];
 				// Holder inicilizado de respuestas
@@ -300,6 +300,7 @@ class ask extends core {
 		$tcpc = 'car_parts_class';
 		$cols = ['ID','image','username','userlast','useremail','subpart','part','brand','model','year','details','startdate'];
 		$profile = $this->db->select($tp,'sell',['userID'=>$auth['ID']]);
+		$asks = [];
 
 		// Contador de elemeentos de  $profile
 		$hasprofile = count($profile);
@@ -340,7 +341,6 @@ class ask extends core {
 			$w['userID[!]'] = $auth['ID'];
 			// Ordenar la consulta por fecha de creacion
 			$w['ORDER'] = ['startdate'=>'DESC'];
-			$asks = null;
 			$asks_temp = $this->db->select($t,$cols,@$w);
 			$c = ['ID','price','currency','details','image','recreated(created)'];
 			foreach($asks_temp as $at){

@@ -2,9 +2,9 @@
 /*!
  * Medoo database framework
  * https://medoo.in
- * Version 1.7.10
+ * Version 1.7.2
  *
- * Copyright 2020, Angel Lai
+ * Copyright 2019, Angel Lai
  * Released under the MIT license
  */
 
@@ -23,25 +23,14 @@ class Raw {
 class Medoo
 {
 	public $pdo;
-
 	protected $type;
-
 	protected $prefix;
-
 	protected $statement;
-
 	protected $dsn;
-
 	protected $logs = [];
-
 	protected $logging = false;
-
 	protected $debug_mode = false;
-
 	protected $guid = 0;
-
-	protected $errorInfo = null;
-
 	public function __construct(array $options)
 	{
 		if (isset($options[ 'database_type' ]))
@@ -335,8 +324,6 @@ class Medoo
 
 	public function exec($query, $map = [])
 	{
-		$this->statement = null;
-
 		if ($this->debug_mode)
 		{
 			echo $this->generate($query, $map);
@@ -357,31 +344,21 @@ class Medoo
 
 		$statement = $this->pdo->prepare($query);
 
-		if (!$statement)
+		if ($statement)
 		{
-			$this->errorInfo = $this->pdo->errorInfo();
-			$this->statement = null;
+			foreach ($map as $key => $value)
+			{
+				$statement->bindValue($key, $value[ 0 ], $value[ 1 ]);
+			}
 
-			return false;
+			$statement->execute();
+
+			$this->statement = $statement;
+
+			return $statement;
 		}
 
-		$this->statement = $statement;
-
-		foreach ($map as $key => $value)
-		{
-			$statement->bindValue($key, $value[ 0 ], $value[ 1 ]);
-		}
-
-		$execute = $statement->execute();
-
-		$this->errorInfo = $statement->errorInfo();
-
-		if (!$execute)
-		{
-			$this->statement = null;
-		}
-
-		return $statement;
+		return false;
 	}
 
 	protected function generate($query, $map)
@@ -445,20 +422,15 @@ class Medoo
 		}
 
 		$query = preg_replace_callback(
-			'/(([`\']).*?)?((FROM|TABLE|INTO|UPDATE|JOIN)\s*)?\<(([a-zA-Z0-9_]+)(\.[a-zA-Z0-9_]+)?)\>(.*?\2)?/i',
+			'/((FROM|TABLE|INTO|UPDATE)\s*)?\<([a-zA-Z0-9_\.]+)\>/i',
 			function ($matches)
 			{
-				if (!empty($matches[ 2 ]) && isset($matches[ 8 ]))
+				if (!empty($matches[ 2 ]))
 				{
-					return $matches[ 0 ];
+					return $matches[ 2 ] . ' ' . $this->tableQuote($matches[ 3 ]);
 				}
 
-				if (!empty($matches[ 4 ]))
-				{
-					return $matches[ 1 ] . $matches[ 4 ] . ' ' . $this->tableQuote($matches[ 5 ]);
-				}
-
-				return $matches[ 1 ] . $this->columnQuote($matches[ 5 ]);
+				return $this->columnQuote($matches[ 3 ]);
 			},
 			$raw->value);
 
@@ -482,11 +454,6 @@ class Medoo
 
 	protected function tableQuote($table)
 	{
-		if (!preg_match('/^[a-zA-Z0-9_]+$/i', $table))
-		{
-			throw new InvalidArgumentException("Incorrect table name \"$table\"");
-		}
-
 		return '"' . $this->prefix . $table . '"';
 	}
 
@@ -521,11 +488,6 @@ class Medoo
 
 	protected function columnQuote($string)
 	{
-		if (!preg_match('/^[a-zA-Z0-9_]+(\.?[a-zA-Z0-9_]+)?$/i', $string))
-		{
-			throw new InvalidArgumentException("Incorrect column name \"$string\"");
-		}
-
 		if (strpos($string, '.') !== false)
 		{
 			return '"' . $this->prefix . str_replace('.', '"."', $string) . '"';
@@ -744,7 +706,7 @@ class Medoo
 						{
 							$item = strval($item);
 
-							if (!preg_match('/(\[.+\]|[\*\?\!\%#^-_]|%.+|.+%)/', $item))
+							if (!preg_match('/(\[.+\]|_|%.+|.+%)/', $item))
 							{
 								$item = '%' . $item . '%';
 							}
@@ -932,7 +894,7 @@ class Medoo
 				}
 				elseif ($raw = $this->buildRaw($ORDER, $map))
 				{
-					$where_clause .= ' ORDER BY ' . $raw;	
+					$where_clause .= ' ORDER BY ' . $raw;
 				}
 				else
 				{
@@ -950,7 +912,7 @@ class Medoo
 					{
 						$LIMIT = [0, $LIMIT];
 					}
-					
+
 					if (
 						is_array($LIMIT) &&
 						is_numeric($LIMIT[ 0 ]) &&
@@ -1204,7 +1166,6 @@ class Medoo
 			if (count($columns_key) === 1 && is_array($columns[$columns_key[0]]))
 			{
 				$index_key = array_keys($columns)[0];
-				$data_key = preg_replace("/^[a-zA-Z0-9_]+\./i", "", $index_key);
 
 				$current_stack = [];
 
@@ -1212,15 +1173,13 @@ class Medoo
 				{
 					$this->dataMap($data, $columns[ $index_key ], $column_map, $current_stack, false, $result);
 
-					$index = $data[ $data_key ];
+					$index = $data[ $index_key ];
 
 					$result[ $index ] = $current_stack;
 				}
 			}
 			else
 			{
-				$current_stack = [];
-				
 				$this->dataMap($data, $columns, $column_map, $current_stack, false, $result);
 
 				$result[] = $current_stack;
@@ -1366,7 +1325,7 @@ class Medoo
 
 		$this->columnMap($columns, $column_map, true);
 
-		if (!$this->statement)
+		if (!$query)
 		{
 			return false;
 		}
@@ -1376,24 +1335,16 @@ class Medoo
 			return $query->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		if ($is_single)
+		{
+			return $query->fetchAll(PDO::FETCH_COLUMN);
+		}
+
 		while ($data = $query->fetch(PDO::FETCH_ASSOC))
 		{
 			$current_stack = [];
 
 			$this->dataMap($data, $columns, $column_map, $current_stack, true, $result);
-		}
-
-		if ($is_single)
-		{
-			$single_result = [];
-			$result_key = $column_map[ $column ][ 0 ];
-
-			foreach ($result as $item)
-			{
-				$single_result[] = $item[ $result_key ];
-			}
-
-			return $single_result;
 		}
 
 		return $result;
@@ -1608,30 +1559,28 @@ class Medoo
 
 		$query = $this->exec($this->selectContext($table, $map, $join, $columns, $where) . ' LIMIT 1', $map);
 
-		if (!$this->statement)
+		if ($query)
 		{
-			return false;
-		}
+			$data = $query->fetchAll(PDO::FETCH_ASSOC);
 
-		$data = $query->fetchAll(PDO::FETCH_ASSOC);
-
-		if (isset($data[ 0 ]))
-		{
-			if ($column === '*')
+			if (isset($data[ 0 ]))
 			{
-				return $data[ 0 ];
+				if ($column === '*')
+				{
+					return $data[ 0 ];
+				}
+
+				$this->columnMap($columns, $column_map, true);
+
+				$this->dataMap($data[ 0 ], $columns, $column_map, $current_stack, true, $result);
+
+				if ($is_single)
+				{
+					return $result[ 0 ][ $column_map[ $column ][ 0 ] ];
+				}
+
+				return $result[ 0 ];
 			}
-
-			$this->columnMap($columns, $column_map, true);
-
-			$this->dataMap($data[ 0 ], $columns, $column_map, $current_stack, true, $result);
-
-			if ($is_single)
-			{
-				return $result[ 0 ][ $column_map[ $column ][ 0 ] ];
-			}
-
-			return $result[ 0 ];
 		}
 	}
 
@@ -1649,14 +1598,14 @@ class Medoo
 			$query = $this->exec('SELECT EXISTS(' . $this->selectContext($table, $map, $join, $column, $where, 1) . ')', $map);
 		}
 
-		if (!$this->statement)
+		if ($query)
 		{
-			return false;
+			$result = $query->fetchColumn();
+
+			return $result === '1' || $result === 1 || $result === true;
 		}
 
-		$result = $query->fetchColumn();
-
-		return $result === '1' || $result === 1 || $result === true;
+		return false;
 	}
 
 	public function rand($table, $join = null, $columns = null, $where = null)
@@ -1708,14 +1657,14 @@ class Medoo
 
 		$query = $this->exec($this->selectContext($table, $map, $join, $column, $where, strtoupper($type)), $map);
 
-		if (!$this->statement)
+		if ($query)
 		{
-			return false;
+			$number = $query->fetchColumn();
+
+			return is_numeric($number) ? $number + 0 : $number;
 		}
 
-		$number = $query->fetchColumn();
-
-		return is_numeric($number) ? $number + 0 : $number;
+		return false;
 	}
 
 	public function count($table, $join = null, $column = null, $where = null)
@@ -1775,11 +1724,6 @@ class Medoo
 
 	public function id()
 	{
-		if ($this->statement == null)
-		{
-			return null;
-		}
-
 		$type = $this->type;
 
 		if ($type === 'oracle')
@@ -1791,14 +1735,7 @@ class Medoo
 			return $this->pdo->query('SELECT LASTVAL()')->fetchColumn();
 		}
 
-		$lastId = $this->pdo->lastInsertId();
-
-		if ($lastId != "0" && $lastId != "")
-		{
-			return $lastId;
-		}
-
-		return null;
+		return $this->pdo->lastInsertId();
 	}
 
 	public function debug()
@@ -1810,7 +1747,7 @@ class Medoo
 
 	public function error()
 	{
-		return $this->errorInfo;
+		return $this->statement ? $this->statement->errorInfo() : null;
 	}
 
 	public function last()
