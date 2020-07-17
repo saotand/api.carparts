@@ -90,7 +90,7 @@ return $user;
 * @url POST /user/new
 */
 public function new_user(){
-return $this->user->add($this->data);
+	return $this->user->add($this->data);
 }
 
 /**

@@ -80,9 +80,23 @@ class ask extends core {
 			if($key === ''){
 				//echo $data[$key];
 			}else if($key=="image"){
+				//var_dump($data['image']);
 				$image_dir = "images/storefiles/request/";
-				$b64img = $this->txt2img($data[$key],$data['ID'],$image_dir);
-				$data_formatted['image'] = $b64img;
+				if(is_array($data[$key])){
+					$cOrder = 0;
+					foreach($data[$key] as $Vimg){
+						$tID = $this->uID();
+						$Vimg = (Array) $Vimg;
+						$imgTemp = $this->txt2img($Vimg['data'],$tID,$image_dir);
+						$imgT = ['ID'=>$tID,'relID'=>$data['ID'],'order'=>$cOrder,'path'=>$imgTemp];
+						$b64img[] = $imgT;
+						$addimg = $this->db->insert('requests_images',$imgT);
+						$cOrder++;
+					}
+				}else{
+					$b64img = $this->txt2img($data[$key],$data['ID'],$image_dir);
+					$data_formatted['image'] = $b64img;
+				}
 			}else{
 				if($required){
 					if($value_exists){
@@ -182,21 +196,52 @@ class ask extends core {
 	// Añadir Preguntas
 	function add($data){
 		// Constantes
+
+		// Tabla
 		$t = 'requests';
+
+		// Columnas
 		$c = $this->t[$t];
+
+		// AUtenticacion
 		$auth = $this->getauth();
+
+		// Datos sin ser procesado
 		$d1 = (array) $data;
+
+		// ID del usuario quien pregunta
 		$d1['userID'] = $auth['ID'];
+
+		// Datos a ser Procesados
 		$d = $this->prepare_data($d1,$c,$t);
+
+		// Creacion o asignacion del ID
 		$ID = isset($d['ID'])?$d['ID']:$this->uID();
+
+		// Condicion de ID
 		$d['ID'] = $ID;
+
+		// Condicion de consulta
 		$w = ['ID' => $ID];
+
+		// Funcion de insertar datos
 		$add_ask = $this->db->insert($t,$d);
+
+		// Captura de filas Afectadas
 		$a = $add_ask->rowCount();
+
+		// Consulta SQL
 		$q = $this->db->last();
+
+		// Captura de errores
 		$e = $this->db->error();
+
+		// Impresion de respuesta o error si lo hay
 		if($a){
 			$added = $this->db->get($t,'*',$w);
+			if(!$added['image']){
+				$added['image'] = $this->db->select($t.'_images',['ID','path','ord'],['relID'=>$ID,'ORDER'=>['ord'=>'ASC']]);
+			}
 			$a1 = $this->plusTable($d['model']);
 			$a2 = $this->plusTable($d['part']);
 			return $this->response($added,'OK');

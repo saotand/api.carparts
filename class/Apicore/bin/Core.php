@@ -16,18 +16,17 @@ require_once(__DIR__.IPATH.'config'.DS.'lang'.DS.'esES.php');
 
 // Manejo de Exepciones
 use
-	Exception,
-	\Jacwright\Restserver\RestException,
-	\Firebase\JWT\JWT,
-	\Firebase\JWT\BeforeValidException,
-	\Firebase\JWT\ExpiredException,
-	\Firebase\JWT\SignatureInvalidException,
-	\upload\uploadclass;
+Exception,
+\Jacwright\Restserver\RestException,
+\Firebase\JWT\JWT,
+\Firebase\JWT\BeforeValidException,
+\Firebase\JWT\ExpiredException,
+\Firebase\JWT\SignatureInvalidException,
+\upload\uploadclass;
 
 abstract class core{
-	// Reservado Sistema
-	protected $data, $head;
 
+	public $data, $head;
 	// Variables de Clase
 	private $db,$t;
 
@@ -88,9 +87,9 @@ abstract class core{
 		global $conexion;
 		// Conexion a la Base de Datos
 		try{
-			$db = new \Medoo\Medoo($conexion);
+		$db = new \Medoo\Medoo($conexion);
 		}catch(\Medoo\Medoo\PDOException $e){
-			throw new Exception($e);
+		throw new Exception($e);
 		}
 		return $db;
 	}
@@ -141,8 +140,8 @@ abstract class core{
 			return false;
 		}
 	}
+		// Respuesta por defecto de clase
 
-	// Respuesta por defecto de clase
 	public function response($data=null, $message = null, $error = null, $code = '200'){
 		if($code == '200'){
 			http_response_code($code);
@@ -164,6 +163,147 @@ abstract class core{
 		}
 	}
 
+
+	// ***********************  Captura de valores ********************************
+
+	// Rutas de archivo
+	function path($path, $check = false){
+		if(is_array($path)){
+			if($check){
+
+			}else{
+
+			}
+		}elseif(is_string){
+			if($check){
+
+			}else{
+
+			}
+		}else{
+			$this->response(null,null,"Ruta de archivo no valida",406);
+		}
+		return $pathed;
+	}
+
+
+	// Find Character
+	function fc($char,$chars,$strict=false){
+		$c = '';
+		$tc = str_split($char);
+		$sp = array_search($tc[0],$chars,$strict);
+		$c = $sp!==false?$chars[$sp]:'';
+		return $c;
+	}
+
+	// Caracter
+	function character($char){
+		$chars = [
+			'','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','u','v','w','x','y','z','á','é','í','ó','ú',
+			'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','U','V','W','X','Y','Z','Á','É','Í','Ó','Ú',
+		];
+		$letter="";
+		$tl = str_split($char);
+		foreach($tl as $l){
+			$letter.= $this->fc($l,$chars,true);
+		}
+		return $letter;
+	}
+
+	// Numero
+	function number($number){
+		$numbers = ['','0','1','2','3','4','5','6','7','8','9'];
+		$tn = str_split($number);
+		$n = '';
+		foreach($tn as $t){
+			$n.= $this->fc($t,$numbers);
+		}
+		return $n;
+	}
+
+	// Palabra
+	function word($word){
+		$worded = '';
+		return $worded;
+	}
+
+	// Parrafo (inconplete)
+	function paragraph($paragraph){
+		$paragraphed = '';
+	}
+
+	function image($image,$rel,$path,$sameID = false){ // depends on other functions
+		$baseURL = "images/storefiles/";
+		//$image_dir = "images/storefiles/request/";
+		if(is_array($image)){ // Si es un vector de imagenes
+			// Inicio de contador de orden
+			$cOrder = 0;
+			// Bucle de iteraccion en el vector de imagenes
+			foreach($image as $cImg){
+				// Creacion de ID para almacenar imagen
+				$tID = $this->uID();
+				// Forzamos a que la imagen sera un array
+				$cImg = (Array) $cImg;
+				// Almacenamos la imagen en disco (funcion "txt2img")
+				$imgTemp = $this->txt2img($cImg['data'],$tID,$baseURL.$path);
+				// creamos un vector con los datos creados
+				$imgT = ['ID'=>$tID,'relID'=>$rel,'ord'=>$cOrder,'path'=>$imgTemp];
+				// aumentamos el contador
+				$cOrder++;
+				// añadimos posiciones a un vector de retorno con los datos almacenados
+				$b64img[] = $imgT;
+			}
+		}elseif(is_string($image)){ //si es el archivo en base64 solamente
+			$tID = $this->uID();
+			$b64img = $this->txt2img($image,$sameID?$rel:$tID,$baseURL.$path);
+		}else{ // Si no es ninguno de los tipos de datos admitidos
+			$this->response(null,null,"Formato de ingreso de imagen en formulario no admitido",406);
+		}
+		return $b64img;
+	}
+
+	// Borrar imagen desde una referencia en una tabla $t
+	function delete_image($t,$ID){
+		$imagedata = $this->db->get($t,'*',['ID'=>$ID]);
+		$diskdel = unlink($imagedata['path']);
+		$delimage = $this->delete($t,['ID'=>$ID]);
+		return ['affected_rows'=>$delimage,'deleted_file'=>$diskdel];
+	}
+
+	//Extrae en un array los diferentes elementos codificados en una imagen eb base64_encode
+	function getimgtxt($imageb64){
+		$data = NULL;
+		$d1 = explode(',',$imageb64);
+		if($d1[0]!=""){
+			$d2 = explode(';',@$d1[0]);
+			$d3 = explode(':',@$d2[0]);
+			$d4 = explode('/',@$d3[1]);
+			$data['mime'] = isset($d2[0])?$d2[0]:NULL;
+			$data['ext'] = isset($d4[1])?$d4[1]:NULL;
+			$data['image'] = isset($d1[1])?$d1[1]:NULL;
+		}
+		return $data;
+	}
+
+	// Escribe en disco una imagen codificada en base64
+	function txt2img($b64img,$filename,$path){
+		//var_dump(['b64'=>$b64img,'file'=>$filename,'path'=>$path]);
+		$imageraw = $this->getimgtxt($b64img);
+		//var_dump($imageraw);
+		$file = NULL;
+		if($imageraw['image']){
+			$file = $path.$filename.".".$imageraw['ext'];
+			$ifp = fopen($file,"wb");
+			fwrite($ifp,base64_decode($imageraw['image']));
+			fclose($ifp);
+			return $file;
+		}else{
+			return NULL;
+		}
+	}
+
+	// ***********************  Captura de valores ********************************
+
 	function time_elapsed_A($secs){
 		$bit = array(
 			'y' => $secs / 31556926 % 12,
@@ -178,7 +318,6 @@ abstract class core{
 		}
 		return join(' ', $ret);
 	}
-
 
 	function time_elapsed_B($secs){
 		$bit = array(
@@ -301,8 +440,8 @@ abstract class core{
 			'iat'=>time(),                      //Token init
 			'exp'=>time() + (24 * 60 * 60),     //Token Expires 24h
 			'data' => $data                     //Data encrypted
-		);
-		return $this->JWT->encode($token,MKEY);
+			);
+			return $this->JWT->encode($token,MKEY);
 	}
 
 	// Desencriptar el JWT
@@ -323,90 +462,40 @@ abstract class core{
 		return $ec;
 	}
 
-	function getimgtxt($imageb64){
-		$data = NULL;
-		$d1 = explode(',',$imageb64);
-		if($d1[0]!=""){
-			$d2 = explode(';',@$d1[0]);
-			$d3 = explode(':',@$d2[0]);
-			$d4 = explode('/',@$d3[1]);
-			$data['mime'] = isset($d2[0])?$d2[0]:NULL;
-			$data['ext'] = isset($d4[1])?$d4[1]:NULL;
-			$data['image'] = isset($d1[1])?$d1[1]:NULL;
-		}
-		return $data;
-	}
-
-	function txt2img($b64img,$filename,$path){
-		$imageraw = $this->getimgtxt($b64img);
-		$file = NULL;
-		if($imageraw['image']){
-			$file = $path.$filename.".".$imageraw['ext'];
-			$ifp = fopen($file,"wb");
-			fwrite($ifp,base64_decode($imageraw['image']));
-			fclose($ifp);
-			return $file;
-		}else{
-			return NULL;
-		}
-	}
-
 	function dateload($mode = ''){
-			$get_num_day = date('w');
-			$get_num_month = date('n');
-			$get_day = date('d');
-			$get_month = date('m');
-			$get_year = date('Y');
-			$get_hour = date('h');
-			$get_24hour = date('H');
-			$get_minute = date('i');
-			$get_second = date('s');
-			$get_ampm = date('A');
-			$day = [
-				"Domingo",
-				"Lunes",
-				"Martes",
-				"Miercoles",
-				"Jueves",
-				"Viernes",
-				"S&aacute;bado"
-			];
-			$month = [
-				"",
-				"Enero",
-				"Febrero",
-				"Marzo",
-				"Abril",
-				"Mayo",
-				"Junio",
-				"Julio",
-				"Agosto",
-				"Septiembre",
-				"Octubre",
-				"Noviembre",
-				"Diciembre"
-			];
-			switch($mode){
-				case "1":
-					$date = "$get_day/$get_month/$get_year";
-				break;
-				case "2":
-					$date = "$day[$get_num_day], $get_day de $month [$get_num_month] de $get_year";
-				break;
-				case "3":
-					$date = "$get_hour:$get_minute:$get_second $get_ampm";
-				break;
-				case "4":
-					$date = "$get_24hour:$get_minute:$get_second";
-				break;
-				case "5":
-					$date = "$get_24hour:$get_minute:$get_second";
-				break;
-				default:
-					$date = "$get_year-$get_month-$get_day";
-				break;
-			}
-			return $date;
+		$get_num_day = date('w');
+		$get_num_month = date('n');
+		$get_day = date('d');
+		$get_month = date('m');
+		$get_year = date('Y');
+		$get_hour = date('h');
+		$get_24hour = date('H');
+		$get_minute = date('i');
+		$get_second = date('s');
+		$get_ampm = date('A');
+		$day = [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "S&aacute;bado"];
+		$month = [ "", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
+		switch($mode){
+			case "1":
+				$date = "$get_day/$get_month/$get_year";
+			break;
+			case "2":
+				$date = "$day[$get_num_day], $get_day de $month [$get_num_month] de $get_year";
+			break;
+			case "3":
+				$date = "$get_hour:$get_minute:$get_second $get_ampm";
+			break;
+			case "4":
+				$date = "$get_24hour:$get_minute:$get_second";
+			break;
+			case "5":
+				$date = "$get_24hour:$get_minute:$get_second";
+			break;
+			default:
+				$date = "$get_year-$get_month-$get_day";
+			break;
+		}
+		return $date;
 	}
 }
 ?>

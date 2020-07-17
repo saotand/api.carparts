@@ -2,14 +2,14 @@
 namespace Apicore\modules;
 // Manejo de Excepciones
 use
-  \Apicore\bin\Core,
-  \Jacwright\Restserver\RestException,
-  \Firebase\JWT\BeforeValidException,
-  \Firebase\JWT\ExpiredException,
-  \Firebase\JWT\SignatureInvalidException,
-  \Firebase\JWT\JWT,
-  Exception,
-  PDO;
+	\Apicore\bin\Core,
+	\Jacwright\Restserver\RestException,
+	\Firebase\JWT\BeforeValidException,
+	\Firebase\JWT\ExpiredException,
+	\Firebase\JWT\SignatureInvalidException,
+	\Firebase\JWT\JWT,
+	Exception,
+	PDO;
 
 class user extends core{
 
@@ -83,7 +83,7 @@ class user extends core{
 					if($checkemail){
 						$checkexists = $this->db->has($t,[$kp=>@$data_formatted[$k]]);
 						$is_same_account = $this->db->get($t,'ID',[$kp => $data[$k]]);
-						if(!$checkexists && ($auth['ID'] !== $ID ) || ( ($auth['ID']== NULL) && ($ID== NULL))|| ($ID ===$is_same_account) ){
+						if(!$checkexists && ($auth['ID'] !== $ID ) || ( ($auth['ID']== NULL) && ($ID== NULL))|| ($ID ===$is_same_account)){
 							if($v){
 								if($ss){
 									$data_formatted[$k] = strtolower($data[$k]);
@@ -122,18 +122,20 @@ class user extends core{
 					}
 				}
 			}else if($k == 'image'){
-				$image_dir = "images/storefiles/users/";
+				// Directorio de imagenes
+				$image_dir = "users/";
+
+				// Verificamos si ya hay una imagen guardada
 				$oldIMG = $this->db->get('users','image',['ID'=>$data['ID']]);
+
+				// Si esxiste y no es la misma de la de origen se elimina la anterior
 				if($oldIMG){
 					if($data[$k] != $oldIMG){
 						unlink($oldIMG);
-						$b64img = $this->txt2img($data[$k],$data['ID'],$image_dir);
-						$data_formatted['image'] = $b64img;
 					}
-				}else{
-					$b64img = $this->txt2img($data[$k],$data['ID'],$image_dir);
-					$data_formatted['image'] = $b64img;
 				}
+				$preimage = $this->image($data[$k],$data['ID'],$image_dir,true);
+				$data_formatted[$k] = $preimage[0]['path'];
 			}elseif($k == 'pass'){
 				// Longitud de la contraseña
 				$passlength = @(int) strlen($data[$k]);
@@ -164,6 +166,8 @@ class user extends core{
 						}
 					}
 				}
+			}elseif($k == 'phone'){
+				$data_formatted[$k] = $this->number($data[$k]);
 			}else{
 				if($v){
 					if($ss){
@@ -198,100 +202,99 @@ class user extends core{
 	}
 
 // ******* Carga de usuario de JWT AUTENTICACION [auth] *****
-    function JWT_user($data){
-        if(isset($data['ID']) && isset($data['email'])){
-            $w = [
-                 'ID'=>$data['ID']
-                ,'email'=>$data['email']
-            ];
-            $is_user = $this->db->has($this->t,$w);
-            return $is_user;
-        }else{
-            return false;
-        }
-    }
+		function JWT_user($data){
+				if(isset($data['ID']) && isset($data['email'])){
+						$w = [
+								'ID'=>$data['ID']
+								,'email'=>$data['email']
+						];
+						$is_user = $this->db->has($this->t,$w);
+						return $is_user;
+				}else{
+						return false;
+				}
+		}
 
-    // Verificar Cuenta de Usuario
-    function verify($ID){
-        $t = "users";
-        $w = ["ID"=>$ID];
-        $check = $this->db->has($t,$w);
-        if($check){
-            $user = $this->db->get($t,'*',$w);
-            if($user['verified']){
-                $this->response(NULL,NULL,"Usuario ya verificado",406);
-            }else{
-                $udp = ['verified'=>1];
-                $toverify = $this->db->update($t,$udp,$w);
-                $q = $this->db->last();
-                $e = $this->db->error();
-                $a = (int) $toverify->rowCount();
-                if($e[2]){
-                    // Mostrar error
-                    return $this->response(NULL,NULL,"Error al verificar la cuenta",406);
-                }else{
-                    if($a){
-                        // Cuenta verificada
-                        return $this->response(NULL,"Cuenta Verificada");
-                    }else{
-                        // No se pudo verificar la cuenta
-                        return $this->response(NULL,"Cuenta ya verificada");
-                    }
-                }
-            }
-        }else{
-            $this->response(NULL,NULL,"Link de verificacion invalido",404);
-        }
-    }
+		// Verificar Cuenta de Usuario
+		function verify($ID){
+				$t = "users";
+				$w = ["ID"=>$ID];
+				$check = $this->db->has($t,$w);
+				if($check){
+						$user = $this->db->get($t,'*',$w);
+						if($user['verified']){
+								$this->response(NULL,NULL,"Usuario ya verificado",406);
+						}else{
+								$udp = ['verified'=>1];
+								$toverify = $this->db->update($t,$udp,$w);
+								$q = $this->db->last();
+								$e = $this->db->error();
+								$a = (int) $toverify->rowCount();
+								if($e[2]){
+										// Mostrar error
+										return $this->response(NULL,NULL,"Error al verificar la cuenta",406);
+								}else{
+										if($a){
+												// Cuenta verificada
+												return $this->response(NULL,"Cuenta Verificada");
+										}else{
+												// No se pudo verificar la cuenta
+												return $this->response(NULL,"Cuenta ya verificada");
+										}
+								}
+						}
+				}else{
+						$this->response(NULL,NULL,"Link de verificacion invalido",404);
+				}
+		}
 
-
-    // Mostrar la informacion de un usuarios o todos
-    function user($ID = NULL, $cols = null){
-        $levelauth = $this->getlevel();
-        $t = $this->t; //Tabla de la base de datos
-        if($levelauth === "5"){
-            if(is_null($cols)){
-                $cols = [
-                    'ID',
-                    'email',
-                    'name',
-                    'last',
-                    'doc',
-                    'doctype',
-                    'nac',
-                    'phone',
-                    'level',
-                    'birth',
-                    'created',
-                    'active',
-                    'verified',
-                    'image'
-                ];
-            }else{
-
-            }
-            unset($cols['pass']);
-            if($ID){
-                $usx = $this->db->has($t,['ID'=>$ID]);
-                if($usx){
-                    $user = $this->db->get($t,$cols,['ID'=>$ID]);
-                }else{
-                    return $this->response(NULL,NULL,'No existe el Usuario','404');
-                }
-            }else{
-                $user = $this->db->select($t,$cols);
-            }
-            return $this->response($user,'OK');
-        }else{
-            return $this->response(NULL,NULL,'Se requiere acceso administrativo','404');
-        }
-    }
+		// Mostrar la informacion de un usuarios o todos
+		function user($ID = NULL, $cols = null){
+				$levelauth = $this->getlevel();
+				$t = $this->t; //Tabla de la base de datos
+				if($levelauth === "5"){
+						if(is_null($cols)){
+								$cols = [
+										'ID',
+										'email',
+										'name',
+										'last',
+										'doc',
+										'doctype',
+										'nac',
+										'phone',
+										'level',
+										'birth',
+										'created',
+										'active',
+										'verified',
+										'image'
+								];
+						}else{
+							// if columns are not administrator level Do nothing?
+						}
+						unset($cols['pass']);
+						if($ID){
+								$usx = $this->db->has($t,['ID'=>$ID]);
+								if($usx){
+										$user = $this->db->get($t,$cols,['ID'=>$ID]);
+								}else{
+										return $this->response(NULL,NULL,'No existe el Usuario','404');
+								}
+						}else{
+								$user = $this->db->select($t,$cols);
+						}
+						return $this->response($user,'OK');
+				}else{
+						return $this->response(NULL,NULL,'Se requiere acceso administrativo','404');
+				}
+		}
 // ******************** Crear Contraseña ***************
-    function pass($user,$pass){
-        $u = strtolower($user);
-        $p = strtolower($pass);
-        return $this->crypt_pass($user.":".$pass);
-    }
+		function pass($user,$pass){
+				$u = strtolower($user);
+				$p = strtolower($pass);
+				return $this->crypt_pass($user.":".$pass);
+		}
 // ******************** Inicio de sesion ***************
 	function login($data){
 		//$t = $this->t;
@@ -368,6 +371,7 @@ class user extends core{
 			if(!$emailcheck){ // Si no Existe el usuario
 				if(!$doccheck){ // Si no se repite la ID (Cedula o documento Similar)
 					$db_data = $this->prepare_data($get_data,$c,true); // Limpiar Datos solo requeridos y opcionales
+					//var_dump($db_data);
 					if(isset($db_data['level'])){
 						$level = $db_data['level'];
 						if($level>1){
@@ -406,8 +410,11 @@ class user extends core{
 							$seller = $db_data['seller'];
 							if($seller['image']){
 								$image = $seller['image'];
+								if(is_array($image)){
+								}else{
 								unset($seller['image']);
 								// ****** AGREGAR FUNCION DE subir IMAGEN Y DEVOLVER LA DIRECCION URL
+								}
 							}
 							$seller['userID'] = $db_data['ID'];
 							$addCompany = $this->db->insert($se,$seller);
@@ -462,6 +469,23 @@ class user extends core{
 		}
 	}
 
+	// Añade o remueve (Datos de tiendas)
+	function seller($userID,$seller,$action="add"){
+		$t = '';
+		$c = [];
+		$w = [];
+	}
+
+	// Añade o elimina items de usuarios
+	function profileitem($userID,$profileitem,$action = "add"){
+		if($action=="edit"){
+
+		}elseif($action=="edit"){
+
+		}else{
+
+		}
+	}
 
 	// Editar Usuario
 	function edit($data){
@@ -531,12 +555,17 @@ class user extends core{
 	// Eliminar Usuario
 	function delete($data){
 		$auth = $this->getauth();
-		$t = $this->t;
-		$w = ['ID'=>$data];
 		if($auth['level'] === "5"){
 			$cuser = $this->db->has($t,$w);
 			if($cuser){
-				$delete = $this->db->delete($t,$w);
+				// Tabla usuarios
+				$delete = $this->db->delete('users',['ID'=>$data]);
+				// Perfil de usuarios
+				$deletprofile = $this->db->delete('users_sell_profile',['userID'=>$data]);
+				// Tiendas
+				$delete_seller = $this->db->delete('users_seller',['userID'=>$data]);
+
+
 				$a = $delete->rowCount();
 				$e = $this->db->error();
 				$q = $this->db->last();
@@ -555,6 +584,25 @@ class user extends core{
 		}else{
 			return $this->response(null,null,"No puedes Eliminar Usuarios",406);
 		}
+	}
+
+	function add_image($rawimage){
+
+	}
+
+	function del_image($relID){
+		$t = 'users_images';
+		$affected = false;
+		$images = $this->db->select($t,'*',['relID'=>$relID]);
+		if($images){
+			$count = 0;
+			foreach($images as $img){
+				$del = $this->delete_image($t,$img['ID']);
+				$count++;
+			}
+			$afected = ['affected'=>$afected,'files'=>$count];
+		}
+		return $affected;
 	}
 
 	function check_user($data){
