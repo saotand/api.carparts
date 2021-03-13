@@ -1,7 +1,7 @@
 <?php
 /*****************************************************
 *
-*      Nucleo de API de consultas turepuesto.com
+*    * Nucleo de API de consultas turepuesto.com
 *
 *****************************************************/
 

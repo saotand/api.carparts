@@ -28,5 +28,27 @@
             "darkred",
         ],
         "Red"
+    ],
+    "i18n-ally.localesPaths": [
+        "class/config/lang",
+        "class/upload/lang"
+    ],
+    "cSpell.ignoreWords": [
+        "autoloader"
+    ],
+    "cSpell.words": [
+        "apicore",
+        "conectar",
+        "consultas",
+        "dgen",
+        "i",
+        "jacwright",
+        "modulos",
+        "nucleo",
+        "pudo",
+        "registro",
+        "turepuesto",
+        "u",
+        "uigen"
     ]
 }
