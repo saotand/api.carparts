@@ -2,7 +2,7 @@
 
 /**********************************************
  *
- * Modulo de Modelos Marcas Partes y Subpartes
+ * *Modulo de Modelos Marcas Partes y Subpartes
  *
  **********************************************/
 
@@ -20,21 +20,19 @@ use
 
 	class car extends core{
 
-		//Columnas Entrada de Datos
+		//? Columnas Entrada de Datos
 		protected $cols = [];
 
-		// Entradas de error de lenguaje
+		//? Entradas de error de lenguaje
 		private $unique,$l,$o;
 
-		// Inicio de Clase
+		//* Inicio de Clase
 		function __construct(){
 			global $conexion, $lang;
-
 				$this->data = json_decode(file_get_contents('php://input'),true,1024);
 				$this->head = apache_request_headers();
 				$this->auth = (!empty($this->head['Authorization']))?$this->head['Authorization']:null;
 				$this->JWT = new JWT;
-
 			// Variables de Inicio
 			// Tablas:  'Tabla'=>['campo' => 'requerido [true:false]']
 			$this->t = [
@@ -71,11 +69,11 @@ use
 					'ID'  => true
 				]
 			];
-			// Listado de mensajes y errores
+			//* Listado de mensajes y errores
 			$this->l = @$lang['car'];
-			// Objetos de Formulario
+			//* Objetos de Formulario
 			$this->o = @$lang['car']['forms'];
-			// Datos unicos de tabla
+			//* Datos unicos de tabla
 			$this->unique = [
 				'car_brands'        => ['name'],
 				'car_models'        => ['name'],
@@ -84,12 +82,11 @@ use
 				'car_parts_family'  => ['name'],
 				'car_parts_ref'     => []
 			];
-
-			// Inicio de la base de datos
+			//! Inicio de la base de datos
 			$this->db = $this->startdb();
 		}
 
-		// Preparar los Datos para ingresar
+		//! Preparar los Datos para ingresar
 		function prepare_data($data,$cols,$table){
 			$data_formatted = [];
 			$l = $this->l[$table];
@@ -103,7 +100,7 @@ use
 						if($value_exists){
 							$nl = strlen($data[$key]);
 							if($nl<$minLength){
-								// Error en caso de que no tenga el minimo de caracteres
+								// Error en caso de que no tenga el mínimo de caracteres
 								$this->response(null,null,sprintf($l['minlength'],$this->o[$key],$minLength),406);
 							}else{
 								$data_formatted[$key] = $data[$key];
@@ -118,11 +115,9 @@ use
 					}
 				}elseif($key === 'format'){
 				}elseif($key === 'familyID'){
-/*
-				}elseif($key === 'brandID'){
+/*				}elseif($key === 'brandID'){
 					$t = 'car_brands';
-					$data_formatted[$key] = @$this->returnIDfromName($t,$data[$key]);
-*/
+					$data_formatted[$key] = @$this->returnIDfromName($t,$data[$key]);*/
 				}else{
 					if($required){
 						if($value_exists){
@@ -139,8 +134,7 @@ use
 			}
 			return $data_formatted;
 		}
-
-		// Revisa si el valor de un campo ya existe
+		// * Revisa si el valor de un campo ya existe
 		function unique_field($data,$t){
 			$u = $this->unique[$t];
 			$l = $this->l[$t];
@@ -157,7 +151,6 @@ use
 			$cn = 'name';
 			$r = $this->db->get($t,$column_return,[$column_name=>$value]);
 			return $r;
-
 		}
 
 		// Mostrar marcas
@@ -212,7 +205,7 @@ use
 					return $this->response(null,null,"Db error",406);
 				}else{
 					// No hubo Cambios
-					return $this->response(null,"No Cahnges");
+					return $this->response(null,"Sin Cambios");
 				}
 			}
 		}
@@ -225,12 +218,11 @@ use
 			$ID = $data['ID'];
 			$w = ['ID'=>$ID];
 			$prepared_data = $this->prepare_data($data,$c,$t);
-
 			$add = $this->db->update($t,$prepared_data,$w);
 			$err = $this->db->error();
 			$que = $this->db->last();
 			$upd = $add->rowCount();
-			 if($upd>0){
+			if($upd>0){
 				// Marca Agregada
 				$addedbrand = $this->db->get($t,$sc,$w);
 				return $this->response($addedbrand,"Marca editada");
@@ -303,12 +295,11 @@ use
 				}
 				// Solo los elementos activos
 				$w[$t.'.active'] = "1";
-
 				$returned = $this->db->select($t,$j,$c,$w);
 				$e = $this->db->error();
 				$q = $this->db->last();
-		 }
-			return $this->response($returned,"ok");
+		}
+		return $this->response($returned,"ok");
 		}
 
 		function car_models_add($data){
@@ -348,12 +339,11 @@ use
 			$w = ['ID'=>$ID];
 			$prepared_data = $this->prepare_data($data,$c,$t);
 			unset($prepared_data['ID']);
-
 			$edit = $this->db->update($t,$prepared_data,$w);
 			$err = $this->db->error();
 			$que = $this->db->last();
 			$upd = $edit->rowCount();
-			 if($upd){
+			if($upd){
 				// Modelo Agregado
 				$addedmodel = $this->db->get($t,$sc,$w);
 				return $this->response($addedmodel,"Modelo editado");
@@ -396,7 +386,6 @@ use
 			$j = [
 				'[>]'.$t2 => ['classID'=>'ID']
 			];
-
 			$c = [
 				$t1.'.ID',
 				$t1.'.name',
@@ -407,51 +396,49 @@ use
 				$t1.'.active',
 				$t2.'.name(sname)'
 			];
-
 			if($all){
 				$parts = $this->db->select($t1,$j,$c);
 			}else{
-			if($solo){
-				$sp = $this->db->select($t2,'*',['active'=>'1','ORDER'=>['name'=>'ASC']]);
-			}else{
-				$c = [$t1.'.ID(ID)',$t1.'.name(name)',$t2.'.name(family)'];
-				$j = ['[>]'.$t2=>['classID'=>'ID']];
-				$w = [$t1.'.active'=>'1',$t2.'.active'=>'1','ORDER'=>[$t1.'.count'=>'DESC',$t2.'.name']];
-				$p = $this->db->select($t1,$j,$c,$w);
-			}
-			$e = $this->db->error();
-			$q = $this->db->last();
-			if($e[2]){
-				return $this->response(null,null,$e[2],406);
-			}else{
 				if($solo){
-					foreach($sp as $SP => $V){
-						$c = $this->db->select($t1,'*',['classID'=>$V['ID'],'active'=>'1','ORDER'=>['name'=>'ASC']]);
-						foreach($c as $k=>$v){
-							$childs[] = ['text'=> ucwords($v['name']),'value' => $v['ID']];
-						}
-						if(isset($childs) && count($childs)>0){
-						$parts[] = [
-							'text'=> ucwords($V['name']),
-							'value' => $V['ID'],
-							'parts'=> $childs
-						];
-					}
-						$childs = [];
-					}
+					$sp = $this->db->select($t2,'*',['active'=>'1','ORDER'=>['name'=>'ASC']]);
 				}else{
-					if(count($p)>0){
-						foreach($p as $k => $v){
-							$subpart = ucwords($v['family']).' - ';
-							$parts[] = ['text' => $subpart.ucwords($v['name']),"value"=>$v['ID']];
+					$c = [$t1.'.ID(ID)',$t1.'.name(name)',$t2.'.name(family)'];
+					$j = ['[>]'.$t2=>['classID'=>'ID']];
+					$w = [$t1.'.active'=>'1',$t2.'.active'=>'1','ORDER'=>[$t1.'.count'=>'DESC',$t2.'.name']];
+					$p = $this->db->select($t1,$j,$c,$w);
+				}
+				$e = $this->db->error();
+				$q = $this->db->last();
+				if($e[2]){
+					return $this->response(null,null,$e[2],406);
+				}else{
+					if($solo){
+						foreach($sp as $SP => $V){
+							$c = $this->db->select($t1,'*',['classID'=>$V['ID'],'active'=>'1','ORDER'=>['name'=>'ASC']]);
+							foreach($c as $k=>$v){
+								$childs[] = ['text'=> ucwords($v['name']),'value' => $v['ID']];
+							}
+							if(isset($childs) && count($childs)>0){
+								$parts[] = [
+									'text'=> ucwords($V['name']),
+									'value' => $V['ID'],
+									'parts'=> $childs
+								];
+							}
+							$childs = [];
 						}
 					}else{
-					 $parts = ['No se encontraron Elementos'];
+						if(count($p)>0){
+							foreach($p as $k => $v){
+								$subpart = ucwords($v['family']).' - ';
+								$parts[] = ['text' => $subpart.ucwords($v['name']),"value"=>$v['ID']];
+							}
+						}else{
+							$parts = ['No se encontraron Elementos'];
+						}
 					}
 				}
 			}
-		}
-
 			return $this->response($parts,'ok');
 		}
 
@@ -509,7 +496,6 @@ use
 						// enviar objeto editado
 						return $this->response($return,'Sin cambios');
 					}
-
 				}else{
 					return $this->response(null,null,"Error en consulta BD: ".$e[2],406);
 				}
@@ -545,7 +531,6 @@ use
 				// Sin autorizacion para editar
 				return $this->response(null,null,"No tienes el nivel de acceso para Eliminar partes",406);
 			}
-
 		}
 
 
@@ -631,7 +616,6 @@ use
 			}else{
 				return $this->response(null,null,"No tienes el nivel de acceso para editar sub partes",406);
 			}
-
 		}
 
 		function car_parts_class_del($data){
@@ -663,7 +647,6 @@ use
 				return $this->response(null,null,"No tienes el nivel de acceso para Eliminar sub partes.",406);
 			}
 		}
-
 		// End of the Class
 	}
 ?>

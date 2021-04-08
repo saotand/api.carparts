@@ -203,7 +203,7 @@ class ask extends core {
 		// Columnas
 		$c = $this->t[$t];
 
-		// AUtenticacion
+		// Autenticación
 		$auth = $this->getauth();
 
 		// Datos sin ser procesado
@@ -224,7 +224,7 @@ class ask extends core {
 		// Condicion de consulta
 		$w = ['ID' => $ID];
 
-		// Funcion de insertar datos
+		// Función de insertar datos
 		$add_ask = $this->db->insert($t,$d);
 
 		// Captura de filas Afectadas
@@ -236,7 +236,7 @@ class ask extends core {
 		// Captura de errores
 		$e = $this->db->error();
 
-		// Impresion de respuesta o error si lo hay
+		// Impresión de respuesta o error si lo hay
 		if($a){
 			$added = $this->db->get($t,'*',$w);
 			if(!$added['image']){
@@ -347,7 +347,7 @@ class ask extends core {
 		$profile = $this->db->select($tp,'sell',['userID'=>$auth['ID']]);
 		$asks = [];
 
-		// Contador de elemeentos de  $profile
+		// Contador de elementos de  $profile
 		$hasprofile = count($profile);
 
 		// Si el usuario tiene perfil de vendedor
@@ -360,7 +360,7 @@ class ask extends core {
 				}
 				$i++;
 			}
-			// Variable de Consulta SQL Vacia
+			// Variable de Consulta SQL Vacía
 			$w = [];
 			foreach($profile as $p){
 				// Ver en tabla Marcas [Condicional con la verificacion de *]

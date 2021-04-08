@@ -1,7 +1,7 @@
 <?php
 /***************************
  *
- * Modulo de preguntas ASK
+ * *Modulo de preguntas ASK
  *
  ***************************/
 
@@ -28,12 +28,10 @@ use
         // Inicio de Clase
     function __construct(){
       global $conexion, $lang;
-
-        $this->data = json_decode(file_get_contents('php://input'),true,1024);
-        $this->head = apache_request_headers();
-        $this->auth = (!empty($this->head['Authorization']))?$this->head['Authorization']:null;
-        $this->JWT = new JWT;
-
+      $this->data = json_decode(file_get_contents('php://input'),true,1024);
+      $this->head = apache_request_headers();
+      $this->auth = (!empty($this->head['Authorization']))?$this->head['Authorization']:null;
+      $this->JWT = new JWT;
       // Variables de Inicio
       // Tablas:  'Tabla'=>['campo' => 'requerido [true:false]']
       $this->t = [
@@ -44,7 +42,6 @@ use
           'typez'   => true
         ]
       ];
-
       // Inicio de la base de datos
       $this->db = $this->startdb();
     }
@@ -55,7 +52,6 @@ use
       $cols = ["item(text)","ID(value)","livein","search","active"];
       $wcountry = ["parentID"=>"0",'active'=>"1"];
       $country = $this->db->select($t,$cols,$wcountry);
-
       foreach($country as $c=>$v){
         $location[$c] = $v;
         $citys = [];
@@ -71,8 +67,7 @@ use
       return $this->response($location,"OK");
     }
 
-    function add_location(){
-
+		function add_location(){
     }
   }
 
